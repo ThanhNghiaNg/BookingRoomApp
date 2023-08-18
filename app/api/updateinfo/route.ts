@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { accommodation_type } from "@/data/AccommodationType";
 import { feature_list } from "@/data/Featured";
 import { convenient_list } from "@/data/convenient";
+import { categories } from "@/data/categories_updated";
 export const feature_list_old = [
   {
     label: "Bể bơi",
@@ -69,49 +70,101 @@ export const accommodation_type_old = [
     value: 2,
   },
 ];
+
+export const categories_old = [
+  {
+    label: "Nhà nông trại",
+    description: "Đây là nhà có nông trại, gần gũi với thiên nhiên",
+  },
+  {
+    label: "Villa",
+    description: "Đây là villa cao cấp",
+  },
+  {
+    label: "Căn hộ",
+    description: "This property is in the countryside!",
+  },
+  {
+    label: "Pools",
+    description: "This is property has a beautiful pool!",
+  },
+  {
+    label: "Đảo",
+    description: "This property is on an island!",
+  },
+  {
+    label: "Castles",
+    description: "This property is an ancient castle!",
+  },
+  {
+    label: "Camping",
+    description: "This property offers camping activities!",
+  },
+  {
+    label: "Barns",
+    description: "This property is in a barn!",
+  },
+  {
+    label: "Lux",
+    description: "This property is brand new and luxurious!",
+  },
+];
 export async function GET(request: Request) {
   try {
     const accommodations = await prisma.accommodation.findMany();
-    const updatedAcommodations = accommodations.map((accom) => {
-      const typeIdx = accommodation_type_old.findIndex(
-        (i) => i.label === accom.accommodationType
-      );
-      console.log(
-        typeIdx,
-        accommodation_type,
-        accommodation_type[typeIdx],
-        typeIdx
-      );
-      accom.accommodationType = accommodation_type[typeIdx].label;
-
-      const featureIdxs = feature_list_old
-        .map((i, idx) => (accom.featured.includes(i.label) ? idx : undefined))
-        .filter((i) => i != undefined);
-      console.log({ featureIdxs });
-      accom.featured = feature_list
-        .filter((i, idx) => featureIdxs.includes(idx))
-        .map((i) => i.label);
-
-      const convenienetIdxs = convenient_list_old
-        .map((i, idx) => (accom.convenient.includes(i.label) ? idx : undefined))
-        .filter((i) => i != undefined);
-      accom.convenient = convenient_list
-        .filter((i, idx) => convenienetIdxs.includes(idx))
-        .map((i) => i.label);
-
-      return accom;
+    const updatePropertiesAccommodations = accommodations.map((accom, i) => {
+      console.log({ i, properties: accom.properties });
+      let idx = categories_old.findIndex((c) => c.label === accom.properties);
+      if ( accom.properties === "Arctic" || accom.properties === "Desert") idx = 0
+      accom.properties = categories[idx].label;
+      return accom
     });
-    const results = updatedAcommodations.map(async (accom) => {
+
+    const results = updatePropertiesAccommodations.map(async (accom) => {
       return await prisma.accommodation.update({
         where: { id: accom.id },
         data: {
-          accommodationType: accom.accommodationType,
-          featured: accom.featured,
-          convenient: accom.convenient,
+          properties: accom.properties,
         },
       });
     });
-    return NextResponse.json({ message: "Success!", results });
+    // const updatedAcommodations = accommodations.map((accom) => {
+    //   const typeIdx = accommodation_type_old.findIndex(
+    //     (i) => i.label === accom.accommodationType
+    //   );
+    //   accom.accommodationType = accommodation_type[typeIdx].label;
+
+    //   const featureIdxs = feature_list_old
+    //     .map((i, idx) => (accom.featured.includes(i.label) ? idx : undefined))
+    //     .filter((i) => i != undefined);
+    //   console.log({ featureIdxs });
+    //   accom.featured = feature_list
+    //     .filter((i, idx) => featureIdxs.includes(idx))
+    //     .map((i) => i.label);
+
+    //   const convenienetIdxs = convenient_list_old
+    //     .map((i, idx) => (accom.convenient.includes(i.label) ? idx : undefined))
+    //     .filter((i) => i != undefined);
+    //   accom.convenient = convenient_list
+    //     .filter((i, idx) => convenienetIdxs.includes(idx))
+    //     .map((i) => i.label);
+
+    //   return accom;
+    // });
+    // const results = updatedAcommodations.map(async (accom) => {
+    //   return await prisma.accommodation.update({
+    //     where: { id: accom.id },
+    //     data: {
+    //       accommodationType: accom.accommodationType,
+    //       featured: accom.featured,
+    //       convenient: accom.convenient,
+    //     },
+    //   });
+    // });
+    return NextResponse.json({
+      message: "Success!",
+      results,
+    });
   } catch (err: any) {
     return NextResponse.json({ message: err.message });
   }

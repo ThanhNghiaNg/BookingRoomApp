@@ -27,7 +27,8 @@ const Navbar: React.FC = () => {
             items-center
             justify-between
             gap-3
-            md:gap-0
+            mx-[-30px]
+            lg:gap-0
           "
           >
             <Image

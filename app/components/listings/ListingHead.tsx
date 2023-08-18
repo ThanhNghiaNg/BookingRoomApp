@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import useCountries from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
-// import { clerkClient, currentUser } from "@clerk/nextjs";
+import { clerkClient, currentUser } from "@clerk/nextjs";
 import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 import { StringifiableRecord } from "query-string";
@@ -37,6 +37,7 @@ const ListingHead: React.FC<ListingHeadProps> = async ({
   clerkID,
   rating,
 }): Promise<Element> => {
+  const userInfo = await currentUser();
   // const [ratingState, setRatingState] = useState<number>(0);
   // const userClerk = await clerkClient.users.getUser(clerkID.userClerkId);
 

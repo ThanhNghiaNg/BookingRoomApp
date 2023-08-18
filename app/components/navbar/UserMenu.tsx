@@ -83,19 +83,19 @@ const UserMenu: React.FC<UserMenuProps> = () => {
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
           onClick={() => handleItemClick("/history?tab=favorites")}
         >
-          Phòng yêu thích của tôi
+          Favorite room
         </button>
         <button
           onClick={() => handleItemClick("/history?tab=current")}
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
         >
-          Đặt phòng của tôi
+          Booking History
         </button>
         <button
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
           onClick={() => handleItemClick("/properties")}
         >
-          Quản lí phòng đã tạo của tôi
+          Manage Properties
         </button>
         <button
           onClick={onRent}
@@ -137,7 +137,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
       onClick={onRent}
       className="
       hidden
-      md:block
+      lg:block
       text-sm
       font-semibold
       py-3
@@ -148,12 +148,12 @@ const UserMenu: React.FC<UserMenuProps> = () => {
       cursor-pointer
     "
     >
-      Let host your home
+      Host your home
     </div>
   );
   return (
     <div className="relative">
-      <div className="flex flex-row items-center gap-3">
+      <div className="flex flex-row items-center gap-3 justify-end">
         {currentUser ? (
           btnHostHome
         ) : (

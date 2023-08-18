@@ -7,7 +7,7 @@ const Loading = () => {
   const pathname = usePathname();
 
   // Check if the current route is a nested route
-  const isNestedRoute = pathname!.split("/").length > 2;
+  const isNestedRoute = pathname!.split("/").length > 3;
 
   if (isNestedRoute) {
     return null;

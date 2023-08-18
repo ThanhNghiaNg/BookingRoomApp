@@ -16,9 +16,10 @@ import Image from "next/image";
 
 import PlaneAnimation from "../public/gifs/paper-airplan.gif";
 import RemoveLoader from "./components/removeLoader";
+import ScreenCheck from "./components/ScreenCheck";
 
 export const metadata = {
-  title: "Đồ án",
+  title: "Travel Nest",
   description: "Công nghệ thông tin 2",
 };
 
@@ -50,9 +51,10 @@ export default async function RootLayout({
             <SearchModal />
             <ConfirmModal />
             <RemoveLoader />
+            <ScreenCheck />
           </ClientOnly>
           <Navbar />
-          <div className="pb-20 pt-28">{children}</div>
+          <div className="pb-20 pt-28 min-h-screen">{children}</div>
           <Footer />
         </body>
       </html>

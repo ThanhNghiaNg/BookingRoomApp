@@ -1,8 +1,7 @@
 import axios from "axios";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Range } from "react-date-range";
-import { useRouter } from "next/navigation";
 import { differenceInDays, eachDayOfInterval } from "date-fns";
 
 import {
@@ -47,11 +46,7 @@ const AccommodationPage: React.FC<ListingClientProps> = async ({
     ssr: false,
   });
 
-  console.log({ accommodationClient: accommodation });
-
   const idClerk = await getInfroUserByClerk({ userID: accommodation.user.id });
-
-  console.log({idClerk})
   /*@ts-expect-error */
   return (
     <Container>

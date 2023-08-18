@@ -10,7 +10,6 @@ import {
   SafeUser,
 } from "@/app/types";
 import { motion } from "framer-motion";
-
 import { EnvironmentOutlined } from "@ant-design/icons";
 
 import Carousel from "react-multi-carousel";
@@ -26,8 +25,11 @@ import vungtau from "../../../public/images/destination/vungtau.jpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { set } from "date-fns";
+import { formatISO, set } from "date-fns";
 import AnimatedText from "../animatedText/AnimatedText";
+import queryString from "query-string";
+import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const destinations = [
   {
@@ -120,6 +122,41 @@ const ListingHotel = ({
   };
 
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
+
+  const searchHandler = (locationValue: string) => {
+    const updatedQuery: any = {
+      locationValue: locationValue,
+      guestCount: 1,
+      roomCount: 1,
+      bathroomCount: 1,
+    };
+
+    updatedQuery.startDate = formatISO(new Date());
+
+    updatedQuery.endDate = formatISO(new Date());
+
+    updatedQuery.page = 1;
+    updatedQuery.pageSize = 8;
+    const url = queryString.stringifyUrl(
+      {
+        url: "/search-accomodation",
+        query: updatedQuery,
+      },
+      { skipNull: true }
+    );
+
+    Promise.all([
+      () => {
+        if (!currentUser) return;
+        axios.post(`/api/search-accommodation`, {
+          locationValue,
+        });
+      },
+    ]).then(() => {
+      router.push(url);
+    });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -158,7 +195,7 @@ const ListingHotel = ({
         </motion.div>
 
         <Link href={btnHref}>
-          <Button>{btnText}</Button>
+          <Button onClick={()=>{searchHandler(" ")}}>{btnText}</Button>
         </Link>
       </div>
 
@@ -355,7 +392,13 @@ const ListingHotel = ({
       {data && type === "explore" && (
         <div className="flex gap-8 mt-4">
           {destinations.map((destination) => (
-            <div className="flex-col flex-1" key={destination.id}>
+            <div
+              className="flex-col flex-1"
+              key={destination.id}
+              onClick={() => {
+                searchHandler(destination.name);
+              }}
+            >
               <Image
                 width={0}
                 height={0}

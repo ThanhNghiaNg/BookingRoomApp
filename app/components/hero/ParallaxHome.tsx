@@ -18,6 +18,7 @@ const parrallax = {
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   backgroundPosition: "top",
+  opacity: 0.8,
 };
 
 const ParallaxHome = () => {
