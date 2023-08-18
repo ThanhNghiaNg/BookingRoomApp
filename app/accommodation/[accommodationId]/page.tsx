@@ -26,6 +26,8 @@ const AccommodationPage = async ({ params }: { params: IParams }) => {
     accommodationId: params.accommodationId,
   });
 
+  console.log({ serverPageaccommodation: accommodation });
+  
   if (!accommodation) {
     return (
       <ClientOnly>
@@ -34,7 +36,6 @@ const AccommodationPage = async ({ params }: { params: IParams }) => {
     );
   }
 
-  console.log({ serverPageaccommodation: accommodation });
 
   return (
     <AccommodationClient
