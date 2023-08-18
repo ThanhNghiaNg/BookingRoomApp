@@ -1,0 +1,10 @@
+@import "../../css/keyframes.css";
+
+.animated-text {
+  opacity: 0;
+  animation: fadeUp 1s ease both;
+}
+
+.animated-text span {
+  display: inline-block;
+}

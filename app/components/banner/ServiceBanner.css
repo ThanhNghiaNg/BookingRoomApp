@@ -1,0 +1,6 @@
+@import "../../css/keyframes.css";
+
+.ServicesBanner .floatedImage {
+  animation: zoomIn 1s ease forwards, floatImages 4s ease-in-out infinite;
+  animation-delay: 2s 3s;
+}

@@ -1,0 +1,230 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  userClerkId       String?
+  email             String?   @unique
+  emailVerified     DateTime?
+  isVerified        Boolean?
+  image             String?
+  hashedPassword    String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  favoriteIds       String[]  @db.ObjectId
+  verificationToken String?
+  isHaveHobbies     Boolean?
+
+  review           Review[]
+  accounts         Account[]
+  listings         Listing[]
+  reservations     Reservation[]
+  Accommodation    Accommodation[]
+  personalProfile  Personal?
+  userSubscription UserSubscription[]
+  SearchHistory    SearchHistory[]
+}
+
+model UserSubscription {
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId                 String    @unique @db.ObjectId
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+  User                   User?     @relation(fields: [userId], references: [id])
+}
+
+model Personal {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @unique @map("userId") @db.ObjectId
+  name            String?
+  age             Int?
+  image           String?
+  locationWish    String?
+  addressUser     String?
+  roomCategory    String?
+  rentalType      String?
+  costPerNight    Int?
+  amenities       String[]
+  specialFeatures String[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SearchHistory {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String  @db.ObjectId
+  location String?
+  times    Int?
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Listing {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  imageSrc      String
+  createdAt     DateTime @default(now())
+  category      String
+  roomCount     Int
+  bathroomCount Int
+  guestCount    Int
+  locationValue String
+  userId        String   @db.ObjectId
+  price         Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // reservations Reservation[]
+}
+
+model Accommodation {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  properties        String
+  accommodationType String
+  address           String
+  area              String
+  beds              Int
+  rooms             Int
+  guest             Int
+  bathrooms         Int
+  convenient        String[]
+  featured          String[]
+  image             String
+  detailPictures    String[]
+  title             String
+  detailDescription String
+  pricesPerDate     Int
+  createdAt         DateTime @default(now())
+  userId            String   @db.ObjectId
+
+  review       Review[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+}
+
+model Reservation {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @db.ObjectId
+  accommodationId String   @db.ObjectId
+  stripeSessionId String   @unique
+  startDate       DateTime
+  endDate         DateTime
+  totalPrice      Int
+  createdAt       DateTime @default(now())
+  email           String
+  name            String
+  phone           String
+  status          String
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
+
+  // listing         Listing        @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  // accommodationId String?        @db.ObjectId
+  // Listing         Listing        @relation(fields: [listingId], references: [id])
+}
+
+// schema.prisma
+
+enum Highlight {
+  CACH_TRUNG_TAM
+  CACH_BIEN
+  TRUNG_TAM
+  GAN_CHO
+  QUANH_CAC_DICH_VU_CONG_CONG
+}
+
+enum AccommodationType {
+  FULL
+  ROOMS
+  SHARE_ROOM
+}
+
+enum Convenience {
+  WIFI
+  TIVI
+  BEP
+  MAY_GIAT
+  CHO_DE_XE_OTO
+  DIEU_HOA
+  KHONG_GIAN_LAM_VIEC
+}
+
+enum Feature {
+  BE_BOI
+  SAN_RONG
+  LO_NUONG_BBQ
+  KHU_VUC_AN_NGOAI_TROI
+  BEP_TRAI
+  LO_SUOI_TRONG_NHA
+  LOI_RA_BIEN
+}
+
+enum Currency {
+  VND
+}
+
+model Picture {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  url             String
+  accommodationId String @db.ObjectId
+}
+
+// model PriceDiscount {
+//   id              String        @id @default(auto()) @map("_id") @db.ObjectId
+//   startDate       DateTime
+//   endDate         DateTime
+//   price           Float
+//   currency        Currency
+//   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+//   accommodationId String        @db.ObjectId
+// }
+
+model Review {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime      @default(now())
+  updateAt        DateTime      @updatedAt
+  accommodationId String        @db.ObjectId
+  userId          String        @db.ObjectId
+  hygienic        Float
+  location        Float
+  price           Float
+  quality         Float
+  rooms           Float
+  establishments  Float
+  rating          Float
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
+
+  @@unique([accommodationId, userId])
+}
