@@ -50,6 +50,8 @@ const AccommodationPage: React.FC<ListingClientProps> = async ({
   console.log({ accommodationClient: accommodation });
 
   const idClerk = await getInfroUserByClerk({ userID: accommodation.user.id });
+
+  console.log({idClerk})
   /*@ts-expect-error */
   return (
     <Container>
