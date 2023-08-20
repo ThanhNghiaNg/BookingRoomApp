@@ -98,15 +98,19 @@ const ConfirmInfo: React.FC<Props> = ({
       phone,
       status: "pending",
     });
+
     if (!reservation) return toast.error("Something went wrong!");
 
     const stripePromise = loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
     );
+
     const stripe = await stripePromise;
+
     const result = await stripe?.redirectToCheckout({
       sessionId: session.data.sessionId,
     });
+
     if (result?.error) {
       toast.error(result.error.message || "");
     }

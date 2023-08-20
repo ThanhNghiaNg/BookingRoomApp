@@ -40,17 +40,17 @@ const initialDateRange = {
 const plans: Plan[] = [
   {
     id: 0,
-    name: "Thanh toán khi nhận phòng",
+    name: "Pay upon room receipt",
     option: "COD",
     descrip:
-      "Bạn sẽ thanh toán tiền mặt khi nhận phòng, phòng có thể hết hoặc xác nhận chậm trễ do chủ nhà gặp một số lý do khách quan",
+      "Pay cash upon room receipt, rooms may run out or confirm later due to host's unforeseen reasons",
   },
   {
     id: 1,
-    name: "Thanh toán ngay",
+    name: "Pay immediately",
     option: "COD",
     descrip:
-      "Bạn sẽ thanh toán ngay bây giờ thông qua cổng thanh toán của chúng tôi, sau đó chủ nhà sẽ liên hệ với bạn để xác nhận ngay khi có thể.",
+      "Pay now through our gateway, host will confirm with you within 24 hours",
   },
 ];
 interface ListingReservationProps {
