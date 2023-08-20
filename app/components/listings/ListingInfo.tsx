@@ -10,7 +10,6 @@ import ListingItem from "./ListingItem";
 import InfoHost from "./InfoHost";
 import ListingProperties from "./ListingProperties";
 import { clerkClient } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server";
 interface ListingInfoProps {
   user: SafeUser;
   description: string;
@@ -21,7 +20,7 @@ interface ListingInfoProps {
   category: string;
   feature: string[];
   convenient: string[];
-  clerkID: User;
+  clerkID: { userClerkId: string };
 }
 
 /*@ts-expect-error */
@@ -45,13 +44,13 @@ const ListingInfo: React.FC<ListingInfoProps> = async ({
     return convenient.find((cn) => cn === item.label);
   });
 
-  // const userClerk = await clerkClient.users.getUser(clerkID.userClerkId);
+  const userClerk = await clerkClient.users.getUser(clerkID.userClerkId);
 
   const inforHost = {
-    name: `${clerkID?.firstName} ${clerkID?.lastName}`,
-    phone: clerkID?.phoneNumbers[0].phoneNumber,
+    name: `${userClerk?.firstName} ${userClerk?.lastName}`,
+    phone: userClerk?.phoneNumbers[0].phoneNumber,
     email: user.email,
-    avatar: clerkID?.imageUrl,
+    avatar: userClerk?.imageUrl,
   };
 
   console.log("userClerk", inforHost);

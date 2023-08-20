@@ -26,6 +26,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
+  onEdit?: (id: string) => void;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -36,6 +37,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   actionId = "",
   currentUser,
+  onEdit,
 }) => {
   const router = useRouter();
 
@@ -50,6 +52,19 @@ const ListingCard: React.FC<ListingCardProps> = ({
       onAction?.(actionId);
     },
     [disabled, onAction, actionId]
+  );
+
+  const handlerEdit = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+
+      if (disabled) {
+        return;
+      }
+
+      onEdit?.(actionId);
+    },
+    [disabled, onEdit, actionId]
   );
 
   const price = useMemo(() => {
@@ -150,12 +165,25 @@ const ListingCard: React.FC<ListingCardProps> = ({
             {!reservation && <div className="font-light">/ đêm</div>}
           </div>
           {onAction && actionLabel && (
-            <Button
-              disabled={disabled}
-              small
-              label={actionLabel}
-              onClick={handleCancel}
-            />
+            <div className="flex justify-between">
+              <div>
+                <Button
+                  disabled={disabled}
+                  small
+                  label={actionLabel}
+                  onClick={handleCancel}
+                />
+              </div>
+              <div>
+                <Button
+                  disabled={disabled}
+                  small
+                  outline
+                  label={"Edit Room"}
+                  onClick={handlerEdit}
+                />
+              </div>
+            </div>
           )}
         </div>
       </div>

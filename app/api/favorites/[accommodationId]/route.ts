@@ -18,7 +18,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
   const { accommodationId } = params;
 
   if (!accommodationId || typeof accommodationId !== "string") {
-    throw new Error("Invalid ID");
+    throw new Error("Invalid");
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
@@ -50,7 +50,7 @@ export async function DELETE(
   const { accommodationId } = params;
 
   if (!accommodationId || typeof accommodationId !== "string") {
-    throw new Error("Invalid ID");
+    throw new Error("Invalid");
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
