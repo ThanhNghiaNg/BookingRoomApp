@@ -23,7 +23,7 @@ const ScrollAnimation = () => {
 
   return (
     <nav
-      className={`fixed z-30 top-3 left-1/2 transform -translate-x-1/2 w-[20%] h-16 transition-all duration-300 ease-in-out  ${
+      className={`fixed z-20 top-3 left-1/2 transform -translate-x-1/2  h-16 transition-all duration-300 ease-in-out  ${
         showNavbar ? "opacity-100" : "opacity-0"
       }`}
     >

@@ -2,7 +2,7 @@
 
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { SafeListing, SafeUser } from "@/app/types";
@@ -22,6 +22,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
+  const [editId, setEditId] = useState("");
 
   const onDelete = useCallback(
     (id: string) => {
@@ -43,16 +44,28 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     [router]
   );
 
+  const onEditRoom = useCallback(
+    (id: string) => {
+      setEditId(id);
+      router.push(`/editroom/${id}`);
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    setEditId("");
+  }, []);
+
   return (
     <Container>
       <Heading title="Properties" subtitle="List of your properties" />
       <div
         className="
           mt-10
-          grid 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
           lg:grid-cols-4
           xl:grid-cols-5
           2xl:grid-cols-6
@@ -65,7 +78,8 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             data={listing}
             actionId={listing.id}
             onAction={onDelete}
-            disabled={deletingId === listing.id}
+            onEdit={onEditRoom}
+            disabled={deletingId === listing.id || editId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}
           />

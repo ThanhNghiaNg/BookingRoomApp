@@ -7,6 +7,7 @@ import {
   GiBoatFishing,
   GiCactus,
   GiCastle,
+  GiCastleRuins,
   GiCaveEntrance,
   GiForestCamp,
   GiIsland,
@@ -15,40 +16,40 @@ import {
 import { FaSkiing } from "react-icons/fa";
 import { BsSnow } from "react-icons/bs";
 import { IoDiamond } from "react-icons/io5";
-import { MdOutlineVilla } from "react-icons/md";
+import { MdApartment, MdOutlineVilla } from "react-icons/md";
 
 import CategoryBox from "../CategoryBox";
 import Container from "../Container";
 
 export const categories = [
   {
-    label: "Nhà nông trại",
+    label: "Farmhouse",
     icon: GiWindmill,
-    description: "Đây là nhà có nông trại, gần gũi với thiên nhiên",
+    description: "This is a house with a farmhouse, close to nature.",
   },
   {
     label: "Villa",
     icon: MdOutlineVilla,
-    description: "Đây là villa cao cấp",
+    description: "This is a luxury villa.",
   },
   {
-    label: "Căn hộ",
-    icon: TbMountain,
+    label: "Apartment",
+    icon: MdApartment,
     description: "This property is in the countryside!",
   },
   {
     label: "Pools",
     icon: TbPool,
-    description: "This is property has a beautiful pool!",
+    description: "This property has a beautiful pool!",
   },
   {
-    label: "Đảo",
+    label: "Island",
     icon: GiIsland,
     description: "This property is on an island!",
   },
   {
     label: "Castles",
-    icon: GiCastle,
+    icon: GiCastleRuins,
     description: "This property is an ancient castle!",
   },
   {
@@ -57,22 +58,12 @@ export const categories = [
     description: "This property offers camping activities!",
   },
   {
-    label: "Arctic",
-    icon: BsSnow,
-    description: "This property is in arctic environment!",
-  },
-  {
-    label: "Desert",
-    icon: GiCactus,
-    description: "This property is in the desert!",
-  },
-  {
     label: "Barns",
     icon: GiBarn,
     description: "This property is in a barn!",
   },
   {
-    label: "Lux",
+    label: "Luxury",
     icon: IoDiamond,
     description: "This property is brand new and luxurious!",
   },
@@ -93,9 +84,9 @@ const Categories = () => {
       <div
         className="
           pt-4
-          flex 
-          flex-row 
-          items-center 
+          flex
+          flex-row
+          items-center
           justify-between
           overflow-x-auto
         "

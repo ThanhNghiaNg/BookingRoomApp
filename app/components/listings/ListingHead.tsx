@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import useCountries from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
-// import { clerkClient, currentUser } from "@clerk/nextjs";
+import { clerkClient, currentUser } from "@clerk/nextjs";
 import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 import { StringifiableRecord } from "query-string";
@@ -13,7 +13,6 @@ import ClientOnly from "../ClientOnly";
 // import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { User } from "@clerk/nextjs/dist/types/server";
 
 interface ListingHeadProps {
   title: string;
@@ -23,7 +22,7 @@ interface ListingHeadProps {
   currentUserForLike?: SafeUser | null;
   user: SafeUser;
   rating: number;
-  clerkID: User;
+  clerkID: { userClerkId: string };
 }
 
 /*@ts-expect-error */
@@ -37,8 +36,9 @@ const ListingHead: React.FC<ListingHeadProps> = async ({
   clerkID,
   rating,
 }): Promise<Element> => {
+  const userInfo = await currentUser();
   // const [ratingState, setRatingState] = useState<number>(0);
-  // const userClerk = await clerkClient.users.getUser(clerkID.userClerkId);
+  const userClerk = await clerkClient.users.getUser(clerkID.userClerkId);
 
   // useEffect(() => {
   //   axios
@@ -58,7 +58,7 @@ const ListingHead: React.FC<ListingHeadProps> = async ({
       <div className="grid items-center justify-center grid-cols-4">
         <div className="flex items-center col-span-3">
           <div className="h-full mr-4">
-            <Avatar src={clerkID?.imageUrl} height={100} width={100} />
+            <Avatar src={userClerk?.imageUrl} height={100} width={100} />
           </div>
           <div className={"text-start"}>
             <div className="text-4xl font-bold">{title}</div>
@@ -68,7 +68,7 @@ const ListingHead: React.FC<ListingHeadProps> = async ({
             </div>
             <div className="flex items-center mt-2 font-light text-neutral-500">
               <AiFillPhone />
-              <span className="ml-2">{`${clerkID?.firstName} ${clerkID?.lastName} - mobile: ${clerkID?.phoneNumbers[0].phoneNumber} - email: ${user.email}`}</span>
+              <span className="ml-2">{`${userClerk?.firstName} ${userClerk?.lastName} - mobile: ${userClerk?.phoneNumbers[0].phoneNumber} - email: ${user.email}`}</span>
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ const Button: React.FC<ButtonProps> = ({
       className={buttonClasses}
     >
       {Icon && <Icon className="mr-2" />}
-      {label}
+      <div className="px-3">{label}</div>
     </button>
   );
 };
