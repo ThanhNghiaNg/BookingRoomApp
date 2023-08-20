@@ -15,6 +15,7 @@ import Image from "next/image";
 import PlaneAnimation from "../public/gifs/paper-airplan.gif";
 import RemoveLoader from "./components/removeLoader";
 import ScreenCheck from "./components/ScreenCheck";
+import ChatAI from "./components/floatButton/ChatAI";
 
 export const metadata = {
   title: "Travel Nest",
@@ -50,6 +51,9 @@ export default async function RootLayout({
             <ConfirmModal />
             <RemoveLoader />
             <ScreenCheck />
+          </ClientOnly>
+          <ClientOnly>
+            <ChatAI />
           </ClientOnly>
           <Navbar />
           <div className="pb-20 pt-28 min-h-screen">{children}</div>

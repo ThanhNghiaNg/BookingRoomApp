@@ -39,6 +39,7 @@
     "framer-motion": "^10.15.1",
     "fs": "^0.0.1-security",
     "leaflet": "^1.9.3",
+    "lottie-web": "^5.12.2",
     "next": "13.2.4",
     "next-auth": "^4.22.1",
     "next-cloudinary": "^4.10.0",
