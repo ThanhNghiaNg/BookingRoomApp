@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
       const reservation = await prisma.reservation.findFirst({
         where: {
-          stripeSessionId: data.object.id,
+          paymentId: data.object.payment_intent,
         },
       });
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       // .catch(error => console.error('Error fetching template:', error));
 
       await sendMail(
-        "TEST",
+        "Refunded Successfully",
         reservation?.email as string,
         reservation?.name as string,
         {
