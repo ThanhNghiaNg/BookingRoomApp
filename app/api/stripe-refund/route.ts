@@ -7,12 +7,12 @@ import { sendMail } from "../../libs/mailService";
 export async function POST(request: Request) {
   try {
     const { data, type } = await request.json();
-    return NextResponse.json({ message: "Success!", type, data });
-    if (type === "refund.created" || type === "refund.updated") {
+    // return NextResponse.json({ message: "Success!", type, data });
+    if (type === "refund.created" || type === "refund.updated" || type === "charge.refunded") {
       // Change status from peding to success
-      await prisma.reservation.update({
+      await prisma.reservation.updateMany({
         where: {
-          stripeSessionId: data.object.id,
+          paymentId: data.object.payment_intent,
         },
         data: {
           status: "refund",
