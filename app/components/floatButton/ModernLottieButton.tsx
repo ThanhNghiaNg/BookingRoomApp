@@ -22,7 +22,7 @@ const ModernLottieButton = () => {
   }, []);
 
   return (
-    <div ref={animationContainer} style={{ width: "50px", height: "50px" }} />
+    <div ref={animationContainer} style={{ width: "80px", height: "80px" }} />
   );
 };
 

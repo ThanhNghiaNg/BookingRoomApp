@@ -4,7 +4,6 @@ import { Range } from "react-date-range";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SafeReservation, SafeUser } from "@/app/types";
-import useLoginModal from "@/app/hooks/useLoginModal";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -89,8 +88,6 @@ const CalendarZone: React.FC<ListingReservationProps> = ({
   onTotalPriceChange,
   onChangePayment,
 }) => {
-  const loginModal = useLoginModal();
-
   const [open, setOpen] = useState(false);
   const [focus, setFocus] = useState(false);
   const [error, setError] = useState(false);

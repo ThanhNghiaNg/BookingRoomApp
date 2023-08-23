@@ -17,6 +17,7 @@ interface ModalProps {
   secondaryActionLabel?: string;
   width?: string;
   classNameStyleTitle?: string;
+  disabledSubmitButton?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -32,6 +33,7 @@ const Modal: React.FC<ModalProps> = ({
   secondaryActionLabel,
   classNameStyleTitle,
   width,
+  disabledSubmitButton = false,
 }) => {
   const handleClose = () => {
     if (disabled) {
@@ -64,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({
         className="fixed inset-0 overflow-y-auto z-50"
         onClose={handleClose}
       >
-        <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="flex items-center justify-center min-h-screen p-4 ">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -122,12 +124,14 @@ const Modal: React.FC<ModalProps> = ({
                     outline
                   />
                 )}
-                <Button
-                  small
-                  disabled={disabled}
-                  label={actionLabel}
-                  onClick={handleSubmit}
-                />
+                {!disabledSubmitButton && (
+                  <Button
+                    small
+                    disabled={disabled}
+                    label={actionLabel}
+                    onClick={handleSubmit}
+                  />
+                )}
               </div>
 
               {footer}

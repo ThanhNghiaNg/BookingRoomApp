@@ -13,7 +13,7 @@ import Link from "next/link";
 import Search from "../navbar/Search";
 
 const parrallax = {
-  backgroundImage: `url("https://wallpaperaccess.com/full/1431610.jpg")`,
+  backgroundImage: `url("https://res.cloudinary.com/dqrm0sqsu/image/upload/v1692806384/1192432_vi0lsm.jpg")`,
   backgroundAttachment: "fixed",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
@@ -39,12 +39,12 @@ const ParallaxHome = () => {
         <div className="absolute flex flex-col items-center justify-center">
           <AnimatedText
             text="Travel Nest"
-            classname=" xl:!text-[7rem] text-light
+            classname=" xl:!text-[7rem] text-red-500
           lg:!text-[5rem]
           md:!text-[3rem]
           sm:!text-[1rem]"
           />
-          <p className="my-10 text-4xl text-light md:text-lg sm:text-xs">
+          <p className="my-10 text-4xl text-red-600 md:text-lg sm:text-xs">
             Easily find places to: Stay, Eat, Shop or Visit from our Partners or
             Local bussinesses.
           </p>

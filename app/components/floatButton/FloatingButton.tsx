@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ModernLottieButton from "./ModernLottieButton";
 import Button from "../Button";
 import { AiFillCloseCircle } from "react-icons/ai";
+import useChatRecommendModal from "../../hooks/useChatRecommendModal";
 
 interface FloatingButtonProps {}
 
@@ -9,6 +10,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = () => {
   const [isMessageVisible, setIsMessageVisible] = useState(true);
   const [message, setMessage] = useState<string>("");
   const [haveClick, setHaveClick] = useState<boolean>(false);
+  const useChatRecommend = useChatRecommendModal();
 
   const messages: string[] = [
     "Discover the natural beauty of Vietnam!",
@@ -43,6 +45,10 @@ const FloatingButton: React.FC<FloatingButtonProps> = () => {
     hideMessage();
     setHaveClick(true);
     displayMessage();
+  };
+
+  const handleClick = () => {
+    useChatRecommend.onOpen();
   };
 
   useEffect(() => {
@@ -81,7 +87,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = () => {
             {message}{" "}
             <button
               className="text-red-500 underline hover:text-red-400"
-              onClick={() => console.log("Click")}
+              onClick={handleClick}
             >
               Click here
             </button>
