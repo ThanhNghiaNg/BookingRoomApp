@@ -7,6 +7,7 @@ import { sendMail } from "../../libs/mailService";
 export async function POST(request: Request) {
   try {
     const { data, type } = await request.json();
+    return NextResponse.json({ message: "Success!", type, data });
     if (type === "refund.created" || type === "refund.updated") {
       // Change status from peding to success
       await prisma.reservation.update({
