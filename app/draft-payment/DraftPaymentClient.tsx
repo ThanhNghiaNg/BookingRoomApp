@@ -20,8 +20,12 @@ export default function DraftPaymentClient({ searchParams, user }: Props) {
         toast.error(result.error.message || "");
     }
   };
+  const refundHandler = async()=>{
+
+  }
   return (
     <div>
+      <button onClick={refundHandler}>Refund</button>
       <button onClick={checkoutHandler}>Checkout</button>
     </div>
   );
