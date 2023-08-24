@@ -18,6 +18,7 @@ interface ModalProps {
   width?: string;
   classNameStyleTitle?: string;
   disabledSubmitButton?: boolean;
+  bgColor?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -34,6 +35,7 @@ const Modal: React.FC<ModalProps> = ({
   classNameStyleTitle,
   width,
   disabledSubmitButton = false,
+  bgColor
 }) => {
   const handleClose = () => {
     if (disabled) {
@@ -89,7 +91,7 @@ const Modal: React.FC<ModalProps> = ({
             leaveTo="opacity-0 scale-95"
           >
             <div
-              className={`bg-white rounded-lg p-6 w-full ${
+              className={`${bgColor ? bgColor : 'bg-white' } rounded-lg p-6 w-full ${
                 width ? width : "max-w-md"
               }`}
             >
