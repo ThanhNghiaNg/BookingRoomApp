@@ -23,6 +23,7 @@ interface InputProps {
   pattern?: string;
   rules?: Partial<Record<string, any>>;
   control?: Control<FieldValues>;
+  placeholder?: string;
   // onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -38,6 +39,7 @@ const Input: React.FC<InputProps> = ({
   pattern,
   rules,
   control,
+  placeholder
   // onChange,
 }) => {
   return (
@@ -67,7 +69,7 @@ const Input: React.FC<InputProps> = ({
             } as any),
           ...rules, // Truyền các rules khác từ props
         })}
-        placeholder=" "
+        placeholder={placeholder ? placeholder : " "}
         type={type}
         className={`
           peer
