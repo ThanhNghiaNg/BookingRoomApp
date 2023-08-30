@@ -17,12 +17,15 @@ export default function DraftPaymentClient({ searchParams, user }: Props) {
       sessionId: session.data.sessionId,
     });
     if (result?.error) {
-        toast.error(result.error.message || "");
+      toast.error(result.error.message || "");
     }
   };
-  const refundHandler = async()=>{
-
-  }
+  const refundHandler = async () => {
+    const postRefund = await axios.post("/api/create-stripe-refund", {
+      paymentId: "pi_3Nd80KAar8ZHD2YJ1Dt1TDfQ", // Get paymentId from Database :>>>> just sample
+    });
+    console.log({ postRefund: postRefund.data });
+  };
   return (
     <div>
       <button onClick={refundHandler}>Refund</button>
