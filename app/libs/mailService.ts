@@ -23,7 +23,7 @@ export async function sendMail(
 
   const startDate = info.startDate;
   const endDate = info.endDate;
-  const historyLink = "https://travelnest.space/history?tab=current";
+  const historyLink = "https://example.com/history";
 
   const formattedStartDate = startDate.toLocaleDateString("en-US", {
     year: "numeric",

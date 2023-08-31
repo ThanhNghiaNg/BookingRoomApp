@@ -81,12 +81,12 @@ const UserMenu: React.FC<UserMenuProps> = () => {
         </button>
         <button
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
-          onClick={() => handleItemClick("/history?tab=favorites")}
+          onClick={() => handleItemClick("/host?tab=favorites")}
         >
           Favorite room
         </button>
         <button
-          onClick={() => handleItemClick("/history?tab=current")}
+          onClick={() => handleItemClick("/host?tab=current")}
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
         >
           Booking History

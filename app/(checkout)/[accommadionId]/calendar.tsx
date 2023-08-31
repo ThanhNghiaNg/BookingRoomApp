@@ -159,7 +159,7 @@ const CalendarZone: React.FC<ListingReservationProps> = ({
   //     .then(() => {
   //       toast.success("Listing reserved!");
   //       setDateRange(initialDateRange);
-  //       router.push("/history?tab=current");
+  //       router.push("/host?tab=current");
   //     })
   //     .catch(() => {
   //       toast.error("Something went wrong.");

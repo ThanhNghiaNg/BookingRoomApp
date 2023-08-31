@@ -42,7 +42,7 @@ export default function SuccessPayment({ searchParams }: Props) {
     //   })
     //   .then(() => {
     //     toast.success("Listing reserved!");
-    //     router.push("/history?tab=current");
+    //     router.push("/host?tab=current");
     //   })
     //   .catch(() => {
     //     toast.error("Something went wrong.");
@@ -82,7 +82,7 @@ export default function SuccessPayment({ searchParams }: Props) {
           <p> Have a nice travel trip! </p>
           <div className="py-10 text-center">
             <button
-              onClick={() => router.push("/history?tab=current")}
+              onClick={() => router.push("/host?tab=current")}
               className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
             >
               CHECK CHECK

@@ -25,14 +25,15 @@ model User {
   verificationToken String?
   isHaveHobbies     Boolean?
 
-  review           Review[]
-  accounts         Account[]
-  listings         Listing[]
-  reservations     Reservation[]
-  Accommodation    Accommodation[]
-  personalProfile  Personal?
-  userSubscription UserSubscription[]
-  SearchHistory    SearchHistory[]
+  review            Review[]
+  accounts          Account[]
+  listings          Listing[]
+  reservations      Reservation[]
+  Accommodation     Accommodation[]
+  personalProfile   Personal?
+  userSubscription  UserSubscription[]
+  SearchHistory     SearchHistory[]
+  PersonalRecommend PersonalRecommend?
 }
 
 model UserSubscription {
@@ -49,6 +50,7 @@ model Personal {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   userId          String   @unique @map("userId") @db.ObjectId
   name            String?
+  gender          String?
   age             Int?
   image           String?
   locationWish    String?
@@ -104,7 +106,6 @@ model Listing {
   price         Int
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // reservations Reservation[]
 }
 
 model Accommodation {
@@ -137,7 +138,6 @@ model Reservation {
   userId          String   @db.ObjectId
   accommodationId String   @db.ObjectId
   stripeSessionId String   @unique
-  paymentId       String
   startDate       DateTime
   endDate         DateTime
   totalPrice      Int
@@ -228,4 +228,12 @@ model Review {
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
 
   @@unique([accommodationId, userId])
+}
+
+model PersonalRecommend {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @map("userId") @db.ObjectId
+  recommendList String[]
+
+  user User @relation(fields: [userId], references: [id])
 }
