@@ -7,21 +7,21 @@ import { sendMail } from "../../libs/mailService";
 export async function POST(request: Request) {
   try {
     const { data, type } = await request.json();
-    if (type === "checkout.session.completed") {
+    // return NextResponse.json({ message: "Success!", type, data });
+    if (type === "refund.created" || type === "refund.updated" || type === "charge.refunded") {
       // Change status from peding to success
-      await prisma.reservation.update({
+      await prisma.reservation.updateMany({
         where: {
-          stripeSessionId: data.object.id,
+          paymentId: data.object.payment_intent,
         },
         data: {
-          status: "success",
-          paymentId: data.object.payment_intent,
+          status: "refund",
         },
       });
 
       const reservation = await prisma.reservation.findFirst({
         where: {
-          stripeSessionId: data.object.id,
+          paymentId: data.object.payment_intent,
         },
       });
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       // .catch(error => console.error('Error fetching template:', error));
 
       await sendMail(
-        "TEST",
+        "Refunded Successfully",
         reservation?.email as string,
         reservation?.name as string,
         {

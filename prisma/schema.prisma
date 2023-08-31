@@ -137,6 +137,7 @@ model Reservation {
   userId          String   @db.ObjectId
   accommodationId String   @db.ObjectId
   stripeSessionId String   @unique
+  paymentId       String
   startDate       DateTime
   endDate         DateTime
   totalPrice      Int
