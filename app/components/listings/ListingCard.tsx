@@ -27,6 +27,7 @@ interface ListingCardProps {
   actionId?: string;
   currentUser?: SafeUser | null;
   onEdit?: (id: string) => void;
+  onClickCard?: () => void;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -38,6 +39,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionId = "",
   currentUser,
   onEdit,
+  onClickCard,
 }) => {
   const router = useRouter();
 
@@ -72,8 +74,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
       return reservation.totalPrice;
     }
 
-    return data.pricesPerDate;
-  }, [reservation, data.pricesPerDate]);
+    return data?.pricesPerDate;
+  }, [reservation, data?.pricesPerDate]);
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
@@ -88,7 +90,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      onClick={() => router.push(`/accommodation/${data.id}`)}
+      onClick={
+        onClickCard
+          ? onClickCard
+          : () => {
+              router.push(`/accommodation/${data?.id}`);
+            }
+      }
       className="card bg-base-100 col-span-1 cursor-pointer group shadow-xl max-h-[550px]"
     >
       <div className="flex flex-col gap-2 w-full">
@@ -111,7 +119,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               group-hover:scale-110
               transition
             "
-              src={data.image}
+              src={data?.image}
               alt="Listing"
               sizes="(max-width: 768px) 100vw,
                 (max-width: 1200px) 50vw, 33vw"
@@ -124,7 +132,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           "
             >
               <HeartButton
-                accommodationId={data.id}
+                accommodationId={data?.id}
                 currentUser={currentUser}
               />
             </div>
@@ -147,9 +155,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
               {reservationDate || data.properties}
             </div>
             <div className="card-actions">
-              {data.convenient
-                .slice(0, 3)
-                .map((element: any, index: number) => (
+              {data?.convenient
+                ?.slice(0, 3)
+                ?.map((element: any, index: number) => (
                   <div
                     key={index}
                     className="badge badge-secondary badge-outline font-light text-neutral-500"

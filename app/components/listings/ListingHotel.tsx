@@ -195,7 +195,13 @@ const ListingHotel = ({
         </motion.div>
 
         <Link href={btnHref}>
-          <Button onClick={()=>{searchHandler(" ")}}>{btnText}</Button>
+          <Button
+            onClick={() => {
+              searchHandler(" ");
+            }}
+          >
+            {btnText}
+          </Button>
         </Link>
       </div>
 
@@ -270,7 +276,7 @@ const ListingHotel = ({
                         {element.address}
                       </div>
                       <span className="text-3xl text-grey-darkest">
-                        {element.pricesPerDate}
+                        {element?.pricesPerDate}
                         <span className="text-lg">/night</span>
                       </span>
                       <div className="flex items-center mt-4">

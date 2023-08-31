@@ -20,7 +20,8 @@ const today = new Date();
 
 const Search = async ({ searchParams }: SearchProps) => {
   const currentUser = await getCurrentUser();
-  const reservations = await getReservations({ userId: currentUser?.id }) || [];
+  const reservations =
+    (await getReservations({ userId: currentUser?.id })) || [];
   const favoriteAccommodations: SafeAccommodation[] =
     await getFavoriteAccommodations();
   const historyReservation: SafeReservation[] = [];
@@ -45,11 +46,19 @@ const Search = async ({ searchParams }: SearchProps) => {
   let tabContent;
   if (searchParams.tab === "current") {
     tabContent = (
-      <ReservationsClient reservations={currentReservations} useAction={true} currentUser={currentUser} />
+      <ReservationsClient
+        reservations={currentReservations}
+        useAction={true}
+        currentUser={currentUser}
+      />
     );
   } else if (searchParams.tab === "history") {
     tabContent = (
-      <ReservationsClient reservations={historyReservation} useAction={false} currentUser={currentUser}/>
+      <ReservationsClient
+        reservations={historyReservation}
+        useAction={false}
+        currentUser={currentUser}
+      />
     );
   } else if (searchParams.tab === "favorites") {
     tabContent = (

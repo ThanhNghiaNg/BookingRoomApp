@@ -66,6 +66,7 @@ const MultiSelectCombobox: React.FC<MultiSelectComboboxProps> = ({
 
   return (
     <Select
+      className="w-full"
       options={customOptions}
       value={customValue}
       isMulti

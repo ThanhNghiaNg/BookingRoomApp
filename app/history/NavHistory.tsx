@@ -24,7 +24,7 @@ export default function NavHistory({}: Props) {
               query.tab === tab.tab ? "border-stone-900" : ""
             }`}
             label={tab.label}
-            onClick={() => router.push(`/history?tab=${tab.tab}`)}
+            onClick={() => router.push(`/host?tab=${tab.tab}`)}
           />
         );
       })}

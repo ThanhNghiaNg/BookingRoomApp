@@ -10,19 +10,32 @@ import { formatISO } from "date-fns";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Modal from "../modals/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useChatRecommendModal from "../../hooks/useChatRecommendModal";
 import TypewriterComponent from "typewriter-effect";
 import Link from "next/link";
 import { AiOutlineSearch } from "react-icons/ai";
 import { travelData } from "./dataFake";
+import { getProvinceList } from "@/data/searchProvider";
+import { SafeAccommodation } from "@/app/types";
+import ListingCard from "../listings/ListingCard";
+import Loading from "./Loading";
 
 function ChatRecommendModal() {
   const useChatRecommend = useChatRecommendModal();
 
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
-  const [accommodationsRecommned, setAccommodationsRecommned] = useState([]);
+
+  const [recommendDestination, setRecommendDestination] = useState<
+    { name: string; reason: string }[]
+  >([]);
+
+  const [accommodationsRecommned, setAccommodationsRecommned] = useState<
+    string[]
+  >([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -50,13 +63,52 @@ function ChatRecommendModal() {
   }
 
   const handleSearch = async () => {
-    const response = await axios.post(`/api/accommodation/chatAI`, {
-      locations,
-    });
-    setAccommodationsRecommned(response.data);
+    if (isLoading) {
+      setIsLoading(true);
+      try {
+        const data: any[] = await getProvinceList({ input: inputValue });
+        setRecommendDestination(data);
 
-    console.log(response.data);
+        const response = await axios.post(`/api/accommodation/chatAI`, {
+          locations: data.map((item) => {
+            return item?.name;
+          }),
+        });
+        setAccommodationsRecommned(response.data);
+
+        console.log(response.data);
+      } catch (error) {
+        // to do
+      }
+
+      setIsLoading(false);
+    }
   };
+  const [accommodation, setAccommodation] = useState<SafeAccommodation[]>([]);
+
+  useEffect(() => {
+    axios
+      .post("/api/accommodation-list1", {})
+      .then((res) => {
+        setAccommodation(res?.data?.data || []);
+      })
+      .catch((error) => {
+        setAccommodation([]);
+      });
+  }, []);
+
+  const [renderData, setRenderData] = useState<SafeAccommodation[]>([]);
+
+  useEffect(() => {
+    const temp = accommodation.filter((item: SafeAccommodation) => {
+      return (
+        accommodationsRecommned.includes(
+          ((item as any)?._id as string) || ""
+        ) || accommodationsRecommned.includes((item?.id as string) || "")
+      );
+    });
+    setRenderData(temp);
+  }, [accommodationsRecommned, accommodation]);
 
   const bodyContent = (
     <div className="px-8  w-min-[60%]">
@@ -68,24 +120,52 @@ function ChatRecommendModal() {
             placeholder="Please provide your wishes and description about the place you want to go. "
             className="px-3 py-3 placeholder-slate-400 text-slate-800 relative bg-white rounded text-lg border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
           />
-          <span className="z-10 h-full leading-snug font-normal text-center text-slate-500 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+          <span className="z-10 h-full leading-snug font-normal text-center text-[#fb06a4] absolute rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
             <AiOutlineSearch size={25} onClick={handleSearch} />
           </span>
         </div>
       </div>
       <div className="text-white font-bold py-36 text-center space-y-5">
-        <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-5 font-extrabold">
-          <h1 className="text-amber-600">The AI Tool for</h1>
-          <div className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-            <TypewriterComponent
-              options={{
-                strings: ["Location.", "Traveling.", "Food.", "Stay station."],
-                autoStart: true,
-                loop: true,
-              }}
-            />
+        {renderData.length ? (
+          <div
+            className="
+          mt-10
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8
+          bg-slate-800
+        "
+          >
+            {renderData.map((item) => (
+              <ListingCard data={item} key={item.id} />
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-5 font-extrabold">
+            {isLoading && <Loading />}
+
+            <h1 className="text-amber-600">The AI Tool for</h1>
+            <div className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              <TypewriterComponent
+                options={{
+                  strings: [
+                    "Location.",
+                    "Traveling.",
+                    "Food.",
+                    "Stay station.",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                }}
+              />
+            </div>
+          </div>
+        )}
         <div className="text-sm md:text-xl font-light text-zinc-400">
           Find the best place for you through AI.
         </div>

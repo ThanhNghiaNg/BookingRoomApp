@@ -21,7 +21,7 @@ const ServicesBanner = () => {
       </div>
       <div className="flex-col flex-1">
         <Image
-          src="/images/servicesbanner/earthIcon.png"
+          src="/images/ServicesBanner/earthIcon.png"
           alt="banner"
           width="100"
           height="100"
@@ -32,7 +32,7 @@ const ServicesBanner = () => {
       </div>
       <div className="flex-col flex-1">
         <Image
-          src="/images/servicesbanner/bagIcon.png"
+          src="/images/ServicesBanner/bagIcon.png"
           alt="banner"
           width="100"
           height="100"
@@ -43,7 +43,7 @@ const ServicesBanner = () => {
       </div>
       <div className="flex-col flex-1">
         <Image
-          src="/images/servicesbanner/atmIcon.png"
+          src="/images/ServicesBanner/atmIcon.png"
           alt="banner"
           width="100"
           height="100"

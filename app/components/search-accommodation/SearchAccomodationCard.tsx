@@ -84,7 +84,7 @@ const SeachAccomodationCard: React.FC<SearchAccomodationCardProps> = ({
             right-3
           "
           >
-            <HeartButton accommodationId={data.id} currentUser={currentUser} />
+            <HeartButton accommodationId={data?.id} currentUser={currentUser} />
           </div>
         </div>
         <div className="col-span-3 py-1">

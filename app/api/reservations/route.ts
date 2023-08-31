@@ -69,7 +69,6 @@ export async function POST(request: Request) {
       status,
       accommodationId,
       stripeSessionId,
-      paymentId: ""
     },
   });
 
