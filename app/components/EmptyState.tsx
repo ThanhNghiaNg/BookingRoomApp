@@ -6,6 +6,7 @@ import Button from "./Button";
 import Heading from "./Heading";
 import Image from "next/image";
 import OpsImage from "../../public/images/ops.png";
+import { useEffect } from "react";
 
 interface EmptyStateProps {
   title?: string;

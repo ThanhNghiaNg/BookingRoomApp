@@ -9,7 +9,8 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "lh3.googleusercontent.com",
       "img.clerk.com",
-      "a0.muscache.com"
+      "a0.muscache.com",
+      "vntraveller.com",
     ],
   },
 };

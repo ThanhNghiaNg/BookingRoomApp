@@ -15,14 +15,21 @@ import { SafeUser } from "./types";
 import Search from "./components/navbar/Search";
 import ScrollAnimation from "./components/navbar/ScrollAnimation";
 import ParallaxHome from "./components/hero/ParallaxHome";
+import Recommendation from "./components/recommendation/Recommendation";
+import HobbiesModal from "./components/modals/HobbiesModal";
+import getUserPersonal from "./actions/getPersonal";
 
 interface HomeProps {
   searchParams: IAccommodationParams;
 }
 
 const Home = async ({ searchParams }: HomeProps) => {
-  const accommodation = await getAccommodation(searchParams);
-  const currentUser = await getCurrentUser();
+  // const accommodation = await getAccommodation(searchParams);
+  // const currentUser = await getCurrentUser();
+  // const userPersonal = await getUserPersonal(currentUser?.id);
+  const accommodation: any[] = [];
+  const currentUser = null as any;
+  const userPersonal = null as any;
 
   if (accommodation.length === 0) {
     return (
@@ -52,6 +59,13 @@ const Home = async ({ searchParams }: HomeProps) => {
           currentUser={currentUser as SafeUser}
         />
 
+        {/* <ClientOnly>
+          <Recommendation
+            currentUser={currentUser}
+            userPersonal={userPersonal}
+          />
+        </ClientOnly> */}
+
         {/* <div className="order-first mb-10 md:order-last md:col-span-3"> */}
 
         <IntroductionBanner />
@@ -79,6 +93,9 @@ const Home = async ({ searchParams }: HomeProps) => {
         />
 
         <GetStartedBanner />
+        {/* <ClientOnly>
+          <HobbiesModal currentUser={currentUser} userPersonal={userPersonal} />
+        </ClientOnly> */}
       </div>
     </Container>
   );
