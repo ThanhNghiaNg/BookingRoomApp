@@ -50,8 +50,8 @@ model Personal {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   userId          String   @unique @map("userId") @db.ObjectId
   name            String?
-  gender          String?
   age             Int?
+  gender          String?
   image           String?
   locationWish    String?
   addressUser     String?
@@ -106,6 +106,7 @@ model Listing {
   price         Int
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // reservations Reservation[]
 }
 
 model Accommodation {
