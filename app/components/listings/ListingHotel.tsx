@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import ListingCard from "./ListingCard";
 import Image from "next/image";
 import {
@@ -16,12 +16,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 //destination assets
-import dalat from "../../../public/images/destination/dalat.jpg";
-import danang from "../../../public/images/destination/danang.png";
-import hanoi from "../../../public/images/destination/hanoi.jpg";
-import nhatrang from "../../../public/images/destination/nhatrang.jpg";
-import TPHCM from "../../../public/images/destination/TPHCM.jpeg";
-import vungtau from "../../../public/images/destination/vungtau.jpg";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -30,6 +25,11 @@ import AnimatedText from "../animatedText/AnimatedText";
 import queryString from "query-string";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const destinations = [
   {
@@ -180,6 +180,22 @@ const ListingHotel = ({
       });
   }, []);
 
+  const responsive = {
+    0: { items: 1 },
+    568: { items: 2 },
+    1024: { items: 3 },
+    1480: { items: 4 },
+    1790: { items: 5 },
+  };
+
+  const responsiveLux = {
+    0: { items: 1 },
+    568: { items: 2 },
+    1024: { items: 2 },
+    1480: { items: 3 },
+    1790: { items: 4 },
+  };
+
   return (
     <div className="flex-col pt-10 mt-[50px]">
       <div className="flex items-center justify-between">
@@ -208,76 +224,67 @@ const ListingHotel = ({
       {data &&
         type === "luxury" &&
         (loading ? (
-          <div className="flex items-center justify-center h-56 max-w-sm bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
-            <svg
-              className="w-10 h-10 text-gray-200 dark:text-gray-600"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 16 20"
-            >
-              <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
-              <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM9 13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2Zm4 .382a1 1 0 0 1-1.447.894L10 13v-2l1.553-1.276a1 1 0 0 1 1.447.894v2.764Z" />
-            </svg>
-            <span className="sr-only">Loading...</span>
-          </div>
+          <Skeleton
+            style={{ marginRight: "20px", height: "250px" }}
+            containerClassName="avatar-skeleton"
+          />
         ) : (
-          <Carousel
-            swipeable={true}
-            draggable={true}
-            ssr={true} // means to render carousel on server-side.
-            arrows={true}
-            showDots={true}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            responsive={{
-              desktop: {
-                breakpoint: { max: 3000, min: 1024 },
-                items: 4,
-                slidesToSlide: 2,
-              },
-              tablet: {
-                breakpoint: { max: 1024, min: 464 },
-                items: 3,
-                slidesToSlide: 1,
-              },
-              mobile: {
-                breakpoint: { max: 464, min: 0 },
-                items: 1,
-                slidesToSlide: 1,
-              },
+          <AliceCarousel
+            responsive={responsiveLux}
+            mouseTracking
+            infinite
+            renderPrevButton={() => {
+              return (
+                <MdNavigateBefore
+                  size={40}
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    bottom: 20,
+                    cursor: "pointer",
+                  }}
+                />
+              );
+            }}
+            renderNextButton={() => {
+              return (
+                <MdNavigateNext
+                  size={40}
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    bottom: 20,
+                    cursor: "pointer",
+                  }}
+                />
+              );
             }}
           >
             {luxuryHotels.map((element: SafeAccommodation) => (
               <div
                 key={element.id}
-                className="relative flex flex-1 h-full w-128"
+                className="card relative flex rounded flex-1 h-full w-128 m-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
               >
-                <div
-                  id="app"
-                  className="flex flex-row bg-white rounded shadow-2xl h-60 card text-grey-darkest"
-                >
+                <div className="flex flex-row bg-white  h-60 text-grey-darkest">
                   <img
-                    className="w-1/2 h-full rounded-l-sm"
+                    className="w-1/2 h-full rounded-l-sm p-2 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] "
                     src={element.image}
                     alt="Room Image"
                   />
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col ">
                     <div className="flex-1 p-4 pb-0">
-                      <h3 className="mb-1 font-light text-grey-darkest">
-                        Tower Hotel
-                      </h3>
-                      <div className="flex items-center mb-4 text-xs">
+                      <Tooltip placement="bottom" title={element.title}>
+                        <h2 className="mb-1 font-light text-grey-darkest truncate w-[200px]">
+                          {element.title}
+                        </h2>
+                      </Tooltip>
+                      <div className="flex items-center mb-4 text-base">
                         <EnvironmentOutlined rev={undefined} className="mr-2" />
                         {element.address}
                       </div>
                       <span className="text-3xl text-grey-darkest">
                         {element?.pricesPerDate}
-                        <span className="text-lg">/night</span>
+                        <span className="text-lg"> /night</span>
                       </span>
                       <div className="flex items-center mt-4">
                         <div className="card-actions">
@@ -294,7 +301,12 @@ const ListingHotel = ({
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-3 transition cursor-pointer">
+                    <div
+                      className="flex items-center justify-end text-cyan-800 p-3 transition cursor-pointer"
+                      onClick={() =>
+                        router.push(`/accommodation/${element.id}`)
+                      }
+                    >
                       Book Now
                       <i className="fas fa-chevron-right"></i>
                     </div>
@@ -302,7 +314,7 @@ const ListingHotel = ({
                 </div>
               </div>
             ))}
-          </Carousel>
+          </AliceCarousel>
         ))}
 
       {data && type === "new" && (
@@ -352,38 +364,29 @@ const ListingHotel = ({
 
       {data && type === "popular" && (
         <div>
-          <Carousel
-            swipeable={true}
-            draggable={true}
-            ssr={true} // means to render carousel on server-side.
-            arrows={true}
-            showDots={true}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            responsive={{
-              desktop: {
-                breakpoint: { max: 3000, min: 1024 },
-                items: 5,
-                slidesToSlide: 2,
-              },
-              tablet: {
-                breakpoint: { max: 1024, min: 464 },
-                items: 3,
-                slidesToSlide: 1,
-              },
-              mobile: {
-                breakpoint: { max: 464, min: 0 },
-                items: 1,
-                slidesToSlide: 1,
-              },
+          <AliceCarousel
+            responsive={responsive}
+            mouseTracking
+            infinite
+            renderPrevButton={() => {
+              return (
+                <MdNavigateBefore
+                  size={40}
+                  style={{ position: "absolute", left: 0, bottom: 20 }}
+                />
+              );
+            }}
+            renderNextButton={() => {
+              return (
+                <MdNavigateNext
+                  size={40}
+                  style={{ position: "absolute", right: 0, bottom: 30 }}
+                />
+              );
             }}
           >
             {popularHotels.map((element: SafeAccommodation) => (
-              <div className="mx-3 mt-4 mb-7" key={element.id}>
+              <div key={element.id}>
                 <ListingCard
                   currentUser={currentUser}
                   key={element.id}
@@ -391,7 +394,7 @@ const ListingHotel = ({
                 />{" "}
               </div>
             ))}
-          </Carousel>
+          </AliceCarousel>
         </div>
       )}
 

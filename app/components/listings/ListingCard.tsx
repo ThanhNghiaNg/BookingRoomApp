@@ -97,7 +97,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               router.push(`/accommodation/${data?.id}`);
             }
       }
-      className="card bg-base-100 col-span-1 cursor-pointer group shadow-xl max-h-[550px]"
+      className="card shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-base-100 col-span-1 cursor-pointer group max-h-[550px] my-4 mx-2"
     >
       <div className="flex flex-col gap-2 w-full">
         <figure>

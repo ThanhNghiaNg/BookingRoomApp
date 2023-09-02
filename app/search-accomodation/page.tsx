@@ -9,6 +9,7 @@ import getAccommodationFilters, {
   IAccommodationFilter,
 } from "../actions/getAccomodationFilters";
 import { IAccommodationParams } from "../actions/getAccommodation";
+import ScrollToTop from "../components/scrollToTop";
 // import ClientOnly from "./components/ClientOnly";
 
 export interface SearchProps {
@@ -27,9 +28,10 @@ export default async function Search({
   const accommodationFilters = await getAccommodationFilters(
     searchParams as IAccommodationParams & IAccommodationFilter
   );
-  
+
   return (
     <ClientOnly>
+      <ScrollToTop />
       <SearchAccommodationClient
         accommodationsProps={accommodations}
         filtersProps={accommodationFilters}

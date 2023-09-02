@@ -28,7 +28,7 @@ const ServicesBanner = () => {
           className="floatedImage"
         />
         <h1 className="my-4 text-2xl font-bold">Lots of Choices</h1>
-        <h3>Total 460+ hotels that we work with.</h3>
+        <h3>Countless Lodging Options Across Vietnam</h3>
       </div>
       <div className="flex-col flex-1">
         <Image
@@ -49,8 +49,8 @@ const ServicesBanner = () => {
           height="100"
           className="floatedImage"
         />
-        <h1 className="my-4 text-2xl font-bold">Easy Booking</h1>
-        <h3>With an easy and fast hotel rent process.</h3>
+        <h1 className="my-4 text-2xl font-bold">Effortless Reservations</h1>
+        <h3>Seamless Booking Powered by Artificial Intelligence</h3>
       </div>
     </div>
   );

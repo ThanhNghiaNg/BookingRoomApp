@@ -1,0 +1,36 @@
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Điều chỉnh độ rộng tùy theo nhu cầu */
+    margin: 0 auto;
+  }
+  
+  .carousel-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px; /* Điều chỉnh chiều cao của item tùy theo nhu cầu */
+    background-color: #f0f0f0; /* Điều chỉnh màu nền tùy theo nhu cầu */
+  }
+  
+  /* Tuỳ chỉnh CSS cho dots */
+  .alice-carousel__dots {
+    position: absolute;
+    bottom: 10px; /* Điều chỉnh vị trí dots từ dưới lên tùy theo nhu cầu */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .alice-carousel__dots-item {
+    background-color: #ccc; /* Màu của dots khi chưa được chọn */
+    width: 10px; /* Kích thước của mỗi dot */
+    height: 10px;
+    margin: 0 5px; /* Khoảng cách giữa các dots */
+    cursor: pointer;
+  }
+  
+  .alice-carousel__dots-item.__active {
+    background-color: #007bff; /* Màu của dot được chọn */
+  }
+  
