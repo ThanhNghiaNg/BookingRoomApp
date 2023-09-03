@@ -75,6 +75,14 @@ const Home = async ({ searchParams }: HomeProps) => {
         />
 
         <ListingHotel
+          text="The Newest Hotels"
+          subtext="The newest rooms will bring new experiences"
+          type="new"
+          data={accommodation}
+          btnHref=""
+        />
+
+        <ListingHotel
           text="Trending Destination"
           subtext="The most popular choices for travelers from Vietnam"
           type="trending"

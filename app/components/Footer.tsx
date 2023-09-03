@@ -15,9 +15,9 @@ const Footer = () => {
           <h1 className="font-bold uppercase xl:text-xl md:text-lg text-primary">
             Travel Nest
           </h1>
-          <p className="hidden my-4 xl:block">
+          <text className="hidden my-4 xl:block">
             Journey Through Vietnam, Rest with Travelnest
-          </p>
+          </text>
           <ul className="flex">
             <Link
               href="https://www.facebook.com/tonducthanguniversity"
@@ -60,17 +60,23 @@ const Footer = () => {
         <div className="flex flex-col flex-1" />
         <div className="flex flex-col flex-1">
           <div className="font-bold xl:text-xl md:text-md text-end">
-            Contact Us
+            <text>Contact Us</text>
           </div>
           <ul className="my-4 xl:text-lg md:text-sm text-end">
-            <li>Team N082</li>
-            <li className="mt-1">travelnest@gmail.com</li>
+            <li>
+              <text>Team N082</text>
+            </li>
+            <li className="mt-1">
+              <text>travelnest@gmail.com</text>
+            </li>
           </ul>
         </div>
       </div>
 
       <div className="flex justify-center pt-4 border-t-[1px] xl:text-lg md:text-sm">
-        <span>{new Date().getFullYear()} &copy; All Rights Reserved.</span>
+        <span>
+          <text>{new Date().getFullYear()} &copy; All Rights Reserved.</text>
+        </span>
       </div>
     </div>
   );

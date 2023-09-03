@@ -197,7 +197,7 @@ const ListingHotel = ({
   };
 
   return (
-    <div className="flex-col pt-10 mt-[50px]">
+    <div className="flex-col pt-10 mt-[50px]" suppressHydrationWarning>
       <div className="flex items-center justify-between">
         <motion.div initial="offscreen" whileInView="onscreen">
           <AnimatedText
@@ -280,11 +280,13 @@ const ListingHotel = ({
                       </Tooltip>
                       <div className="flex items-center mb-4 text-base">
                         <EnvironmentOutlined rev={undefined} className="mr-2" />
-                        {element.address}
+                        <text>{element.area}</text>
                       </div>
                       <span className="text-3xl text-grey-darkest">
-                        {element?.pricesPerDate}
-                        <span className="text-lg"> /night</span>
+                        <text>{element?.pricesPerDate}</text>
+                        <span className="text-lg">
+                          <text> /night</text>
+                        </span>
                       </span>
                       <div className="flex items-center mt-4">
                         <div className="card-actions">
@@ -302,12 +304,12 @@ const ListingHotel = ({
                       </div>
                     </div>
                     <div
-                      className="flex items-center justify-end text-cyan-800 p-3 transition cursor-pointer"
+                      className="flex items-center justify-center text-cyan-800 p-3 transition cursor-pointer"
                       onClick={() =>
                         router.push(`/accommodation/${element.id}`)
                       }
                     >
-                      Book Now
+                      <text>Book Now</text>
                       <i className="fas fa-chevron-right"></i>
                     </div>
                   </div>
@@ -319,38 +321,39 @@ const ListingHotel = ({
 
       {data && type === "new" && (
         <div>
-          <Carousel
-            swipeable={true}
-            draggable={true}
-            ssr={true} // means to render carousel on server-side.
-            arrows={true}
-            showDots={true}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            responsive={{
-              desktop: {
-                breakpoint: { max: 3000, min: 1024 },
-                items: 5,
-                slidesToSlide: 2,
-              },
-              tablet: {
-                breakpoint: { max: 1024, min: 464 },
-                items: 3,
-                slidesToSlide: 1,
-              },
-              mobile: {
-                breakpoint: { max: 464, min: 0 },
-                items: 1,
-                slidesToSlide: 1,
-              },
+          <AliceCarousel
+            responsive={responsive}
+            mouseTracking
+            infinite
+            renderPrevButton={() => {
+              return (
+                <MdNavigateBefore
+                  size={40}
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    bottom: 20,
+                    cursor: "pointer",
+                  }}
+                />
+              );
+            }}
+            renderNextButton={() => {
+              return (
+                <MdNavigateNext
+                  size={40}
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    bottom: 20,
+                    cursor: "pointer",
+                  }}
+                />
+              );
             }}
           >
             {newHotel.map((element: SafeAccommodation) => (
-              <div className="mx-3 mt-4 mb-7" key={element.id}>
+              <div key={element.id}>
                 <ListingCard
                   currentUser={currentUser}
                   key={element.id}
@@ -358,7 +361,7 @@ const ListingHotel = ({
                 />{" "}
               </div>
             ))}
-          </Carousel>
+          </AliceCarousel>
         </div>
       )}
 
