@@ -274,7 +274,7 @@ const ListingHotel = ({
                   <div className="flex flex-col ">
                     <div className="flex-1 p-4 pb-0">
                       <Tooltip placement="bottom" title={element.title}>
-                        <h2 className="mb-1 font-light text-grey-darkest truncate w-[200px]">
+                        <h2 className="mb-1 font-light text-grey-darkest truncate w-[150px]">
                           {element.title}
                         </h2>
                       </Tooltip>

@@ -13,7 +13,7 @@ import Link from "next/link";
 import Search from "../navbar/Search";
 
 const parrallax = {
-  backgroundImage: `url("https://images.unsplash.com/photo-1555979864-7a8f9b4fddf8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80")`,
+  backgroundImage: `url("https://res.cloudinary.com/dqrm0sqsu/image/upload/v1693752971/photo-1653537276528-7814aee01641_k8lcgw.avif")`,
   backgroundAttachment: "fixed",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
@@ -38,12 +38,12 @@ const ParallaxHome = () => {
         <div className="absolute flex flex-col items-center justify-center">
           <AnimatedText
             text="Travel Nest"
-            classname=" xl:!text-[7rem] text-[#f16868]
+            classname=" xl:!text-[7rem] text-[#ec4b4b]
           lg:!text-[5rem]
           md:!text-[3rem]
           sm:!text-[1rem]"
           />
-          <p className="my-10 text-8xl text-[#f8d6d6] md:text-lg sm:text-xs">
+          <p className="my-7 text-8xl text-[#f7f7f7] md:text-lg sm:text-xs">
             Easily find places to: Stay, Eat, Shop or Visit from our Partners or
             Local bussinesses.
           </p>
