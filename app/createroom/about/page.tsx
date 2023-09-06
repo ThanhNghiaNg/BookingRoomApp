@@ -20,6 +20,8 @@ import ImageUpload from "@/app/components/inputs/ImageUpload";
 import ImageUploadMulti from "@/app/components/inputs/ImageUploadMulti";
 import { useRouter } from "next/navigation";
 import { Image } from "antd";
+import Modal from "@/app/components/modals/Modal";
+import { useConfirmOwnerModal } from "@/app/hooks/useConfrimModal";
 
 enum STEPS {
   BASE = -1,
@@ -57,10 +59,26 @@ type PageProps = {
   edit?: boolean;
   accommodationInfo?: any;
 };
+
+const bodyContentModal = (
+  <div className="flex flex-col justify-center items-center">
+    <text className="text-black font-bold mt-5">Knock knock</text>
+    <text className="text-center text-gray-500 font-semibold mt-4">
+      You have fully described your accommodation
+    </text>
+    <text className="text-center text-gray-500 font-semibold mt-4">
+      Because we want to make sure you give the best description of the place
+      you want to rent
+    </text>
+  </div>
+);
+
 const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.BASE);
+
+  const confirmOwnerModal = useConfirmOwnerModal();
 
   const [selectedValuesFeature, setSelectedValuesFeature] = useState<string[]>(
     []
@@ -138,13 +156,21 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     setStep((value) => value + 1);
   };
 
+  const handleConfirmModal = () => {
+    confirmOwnerModal.onClose();
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (step !== STEPS.PRICE) {
       return onNext();
     }
 
+    if (step == STEPS.PRICE) {
+      confirmOwnerModal.onOpen();
+    }
+
     setIsLoading(true);
-    console.log({ accommodationInfo });
+    console.log(accommodationInfo);
     axios
       .post(edit ? "/api/accommodation/update" : "/api/accommodation", {
         ...data,
@@ -218,14 +244,17 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     <div className="grid grid-cols-2 gap-10">
       <div className="flex items-center">
         <div>
-          <h1 className="text-2xl font-bold mb-4">Bước 1:</h1>
+          <h1 className="text-4xl font-bold mb-4 text-orange-700">
+            Start to become a room owner for rent:
+          </h1>
           <h2 className="text-xl font-bold mb-4">
-            Chia sẻ thông tin về chỗ ở của bạn cho chúng tôi
+            Share information about your accommodation with us
           </h2>
           <text className="text-lg mb-4">
-            Trong bước này, chúng tôi sẽ hỏi xem bạn cho thuê loại chỗ ở nào và
-            bạn muốn cho khách đặt toàn bộ nhà hay chỉ một phòng cụ thể. Sau đó,
-            hãy cho chúng tôi biết vị trí và số lượng khách có thể ở tại đó.
+            In this step, we will ask if you are renting out what type of
+            accommodation and whether you want guests to book the entire house
+            or just a specific room. Then, please let us know the location and
+            the number of guests that can stay there
           </text>
         </div>
       </div>
@@ -249,8 +278,8 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Đâu là dạng chỗ lưu trú bạn muốn cho thuê"
-          subtitle="Hãy chọn một trong số những dạng chỗ ở dưới đây"
+          title="What type of accommodation do you want to rent?"
+          subtitle="Choose from one of the accommodation options below"
         />
         <div
           className="
@@ -282,8 +311,8 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col items-center">
         <Heading
-          title="Khách sẽ được sử dụng loại chỗ ở nào?"
-          subtitle="Hãy chọn một trong số những dạng chỗ ở dưới đây"
+          title="What kind of accommodation will guests be able to use?"
+          subtitle="Choose from one of the accommodation options below"
         />
         <div className="grid grid-cols-1 md:grid-cols-1 gap-3 overflow-y-auto">
           {accommodation_type.map((item) => (
@@ -307,13 +336,12 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Xác nhận địa chỉ của bạn"
-          subtitle="Địa chỉ của bạn chỉ được chia sẻ với khách sau khi họ đặt phòng thành công.
-          "
+          title="Confirm your address"
+          subtitle="Your address is only shared with guests after they have successfully booked."
         />
         <Input
           id="address"
-          label="Địa chỉ"
+          label="Address"
           disabled={isLoading}
           register={register}
           errors={errors}
@@ -321,7 +349,7 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
         />
         <Input
           id="area"
-          label="Thành phố hoặc Tỉnh"
+          label="City or Province"
           disabled={isLoading}
           register={register}
           errors={errors}
@@ -340,35 +368,35 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Chia sẻ một số thông tin cơ bản về chỗ ở của bạn"
-          subtitle="Sau này, bạn sẽ bổ sung những thông tin khác, như loại giường chẳng hạn."
+          title="Share some basic information about your accommodation"
+          subtitle="Later, you will add other information, like bed type, for example."
         />
         <Counter
           onChange={(value) => setCustomValue("beds", value)}
           value={beds}
-          title="Giường"
-          subtitle="Số giường có trong chỗ ở"
+          title="Bed"
+          subtitle="Number of beds available in the accommodation"
         />
         <hr />
         <Counter
           onChange={(value) => setCustomValue("rooms", value)}
           value={rooms}
-          title="Phòng ngủ"
-          subtitle="Số phòng ngủ hiện có"
+          title="Bedroom"
+          subtitle="Number of bedrooms available"
         />
         <hr />
         <Counter
           onChange={(value) => setCustomValue("guest", value)}
           value={guest}
-          title="Khách"
-          subtitle="Số khách tối đa có thể chứa"
+          title="Guest"
+          subtitle="Maximum number of guests that can accommodate"
         />
         <hr />
         <Counter
           onChange={(value) => setCustomValue("bathrooms", value)}
           value={bathrooms}
-          title="Phòng tắm"
-          subtitle="Số phòng tắm hiện có"
+          title="Bathroom"
+          subtitle="Number of available bathrooms"
         />
       </div>
     );
@@ -378,8 +406,8 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Cho khách biết chỗ ở của bạn có những gì"
-          subtitle="Bạn có thể thêm tiện nghi sau khi đăng mục cho thuê."
+          title="Let guests know what your accommodation has"
+          subtitle="You can add amenities after you list your rental"
         />
         <div
           className="
@@ -403,7 +431,7 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
         </div>
         <Heading
           title=""
-          subtitle="Bạn có tiện nghi hoặc đặc điểm nào nổi bật không?."
+          subtitle="Do you have any amenities or features that stand out?"
         />
         <div
           className="
@@ -454,8 +482,8 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
       <>
         <div className="flex flex-col gap-8">
           <Heading
-            title="Chọn ảnh làm đại hiện cho chổ ở của bạn"
-            subtitle="Chọn 1 bức ảnh mà bạn thấy đẹp nhất (bắt buộc)"
+            title="Choose a photo to represent your place"
+            subtitle="Choose 1 photo that you think looks best (required)"
           />
           <ImageUpload
             onChange={(value) => setCustomValue("image", value)}
@@ -464,8 +492,8 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
         </div>
         <div className="flex flex-col gap-8 pt-8">
           <Heading
-            title="Chọn ảnh miêu tả về chỗ ở của bạn"
-            subtitle="Chọn tối đa 4 bức ảnh"
+            title="Choose a photo that describes your accommodation"
+            subtitle="Select up to 4 photos"
           />
           <ImageUploadMulti onChange={handleImageChange} />
           <div className="flex flex-wrap justify-center">
@@ -508,12 +536,12 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Bây giờ, hãy đặt tiêu đề cho chỗ ở thuộc danh mục nhà của bạn?"
-          subtitle="Tiêu đề ngắn cho hiệu quả tốt nhất. Đừng lo lắng, bạn luôn có thể thay đổi tiêu đề sau."
+          title="Now, title your home category accommodation?"
+          subtitle="Short titles for best results. Don't worry, you can always change the title later."
         />
         <Input
           id="title"
-          label="Tiêu đề"
+          label="Title"
           disabled={isLoading}
           register={register}
           errors={errors}
@@ -527,12 +555,12 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Tạo phần mô tả"
-          subtitle="Chia sẻ những điều tạo nên nét đặc biệt cho chỗ ở của bạn."
+          title="Create description"
+          subtitle="Share what makes your property special."
         />
         <Input
           id="detailDescription"
-          label="Thông tin chi tiết"
+          label="Description"
           disabled={isLoading}
           register={register}
           errors={errors}
@@ -551,7 +579,7 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
         />
         <Input
           id="pricesPerDate"
-          label="Giá theo ngày"
+          label="Price per day"
           formatPrice
           type="number"
           disabled={isLoading}
@@ -564,14 +592,16 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
   }
 
   return (
-    <StepPage
-      disabled={isLoading}
-      actionLabel={actionLabel}
-      onSubmit={handleSubmit(onSubmit)}
-      secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step === STEPS.BASE ? undefined : onBack}
-      body={bodyContent}
-    />
+    <>
+      <StepPage
+        disabled={isLoading}
+        actionLabel={actionLabel}
+        onSubmit={handleSubmit(onSubmit)}
+        secondaryActionLabel={secondaryActionLabel}
+        secondaryAction={step === STEPS.BASE ? undefined : onBack}
+        body={bodyContent}
+      />
+    </>
   );
 };
 

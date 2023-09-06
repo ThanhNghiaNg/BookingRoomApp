@@ -38,7 +38,7 @@ const ParallaxHome = () => {
         <div className="absolute flex flex-col items-center justify-center">
           <AnimatedText
             text="Travel Nest"
-            classname=" xl:!text-[7rem] text-[#ec4b4b]
+            classname=" xl:!text-[7rem] text-[#f76b6b]
           lg:!text-[5rem]
           md:!text-[3rem]
           sm:!text-[1rem]"

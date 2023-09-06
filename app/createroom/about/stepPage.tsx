@@ -42,7 +42,7 @@ const StepPage: React.FC<ModalProps> = ({
   }, [secondaryAction, disabled]);
 
   return (
-    <div className="w-full h-screen my-6 mx-auto lg:h-auto md:h-auto">
+    <div className="w-full h-full my-6 mx-auto lg:h-auto md:h-auto overflow-auto">
       {/*content*/}
       <div className="justify-center">
         {/*body*/}
@@ -66,15 +66,15 @@ const StepPage: React.FC<ModalProps> = ({
                 />
               )}
             </div>
-            <div className="flex-1 text-center">
-              {/* Centered Step component */}
-              <ul className="steps">
-                {/* <li className="step step-primary">Step 1</li> */}
-                <li className="step step-primary">Step 1</li>
+            {/* <div className="flex-1 text-center"> */}
+            {/* Centered Step component */}
+            {/* <ul className="steps"> */}
+            {/* <li className="step step-primary">Step 1</li> */}
+            {/* <li className="step step-primary">Step 1</li>
                 <li className="step">Step 2</li>
                 <li className="step">Step 3</li>
               </ul>
-            </div>
+            </div> */}
             <div>
               {/* Right button */}
               <Button
