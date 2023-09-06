@@ -171,22 +171,36 @@ const AboutYourPlacePage = ({ edit, accommodationInfo }: PageProps) => {
 
     setIsLoading(true);
     console.log(accommodationInfo);
-    axios
-      .post(edit ? "/api/accommodation/update" : "/api/accommodation", {
-        ...data,
-        accommodationId: accommodationInfo.id,
-      })
-      .then(() => {
-        if (edit) {
+
+    if (edit) {
+      axios
+        .post("/api/accommodation", {
+          ...data,
+          accommodationId: accommodationInfo.id,
+        })
+        .then(() => {
           toast.success("Listing Updated!");
           router.push(`/accommodation/${accommodationInfo.id}`);
-        } else {
-          router.push("/");
-          toast.success("Listing created!");
-          router.refresh();
-          reset();
-          setStep(STEPS.BASE);
-        }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Something went wrong.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+
+    axios
+      .post("/api/accommodation", {
+        ...data,
+      })
+      .then(() => {
+        router.push("/");
+        toast.success("Listing created!");
+        router.refresh();
+        reset();
+        setStep(STEPS.BASE);
       })
       .catch((error) => {
         console.log(error);
