@@ -47,7 +47,7 @@ const plans: Plan[] = [
   {
     id: 1,
     name: "Pay immediately",
-    option: "COD",
+    option: "ONLINE",
     descrip:
       "Pay now through our gateway, host will confirm with you within 24 hours",
   },
@@ -301,11 +301,11 @@ const CalendarZone: React.FC<ListingReservationProps> = ({
       <div className="flex flex-col items-end justify-end p-4 text-lg font-semibold z-0">
         <div className="flex flex-col justify-end  w-[40%]">
           <div className="flex flex-row items-center gap-1 p-4 justify-between">
-            <div>Giá một đêm: </div>
+            <div>Price Per Day: </div>
             <div className="z-10 font-light text-neutral-600 ">${price}</div>
           </div>
           <div className="flex flex-row items-center gap-1 p-4 justify-between">
-            <div>Tổng tiền: </div>
+            <div>Total Price: </div>
             <div className="z-10 font-light text-neutral-600">
               ${totalPrice}
             </div>
@@ -313,11 +313,7 @@ const CalendarZone: React.FC<ListingReservationProps> = ({
         </div>
       </div>
       <div className="card-body">
-        <PaymentOption
-          plans={plans}
-          value={selectedPlan}
-          onChange={onChangePayment}
-        />
+        <PaymentOption plans={plans} onChange={onChangePayment} />
       </div>
       <div className={`p-4 ${open && "hidden"}`}>
         <Button disabled={isLoading} label="Đặt phòng" onClick={onSubmit} />

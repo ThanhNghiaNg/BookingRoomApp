@@ -199,6 +199,7 @@ async function ConfirmPage({ searchParams }: Props) {
                 reservations={reservations}
                 imageAccommodationUrl={accommodation?.image}
                 accommodationTitle={accommodation?.title}
+                hostRoom={accommodation?.userId}
               />
             </ClientOnly>
           </div>

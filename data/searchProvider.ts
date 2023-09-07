@@ -36,7 +36,8 @@ const recommendationPrompt = `Here's requirement and information of them, who yo
 
 {{userDescription}}
 
-Based on user requirement and information, base on your knowledge to give them some destination in Viet Nam, which is suilt for them.
+Based on user requirement and information, base on your knowledge to give them at least 7 destination in Viet Nam, which is suilt for them. The detination must be separate such as:
+'ba ria - vung tau' should be 'ba ria', 'vung tau'. And the reason must less than 70 characters.
 Remember, your answer should be formatted as a json array of suggestions with 'name' is the name of this destination (province or city), "reason" is the reason why you suggest this hotel to them. like this:
 [
   {
@@ -92,8 +93,13 @@ const getProvinceList = async ({ input = "" }: { input: string }) => {
     ];
 
     const recommendationCompletion = await createChatCompletion(messages);
+    console.log("get result");
 
-    const recommendations = JSON.parse(recommendationCompletion);
+    const recommendations = JSON.parse(
+      toNonAccentVietnamese(recommendationCompletion)
+    );
+
+    console.log("get format");
 
     return recommendations;
   } catch (err: any) {

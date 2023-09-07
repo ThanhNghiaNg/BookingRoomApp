@@ -167,7 +167,7 @@ const ListingHotel = ({
         setLuxuryHotels(data);
       });
 
-    fetch("/api/acommodationLux/new")
+    fetch("/api/acommodationLux/popular")
       .then((res) => res.json())
       .then((data) => {
         setNewHotel(data);
@@ -352,7 +352,7 @@ const ListingHotel = ({
               );
             }}
           >
-            {newHotel.map((element: SafeAccommodation) => (
+            {popularHotels.map((element: SafeAccommodation) => (
               <div key={element.id}>
                 <ListingCard
                   currentUser={currentUser}
@@ -388,7 +388,7 @@ const ListingHotel = ({
               );
             }}
           >
-            {popularHotels.map((element: SafeAccommodation) => (
+            {newHotel.map((element: SafeAccommodation) => (
               <div key={element.id}>
                 <ListingCard
                   currentUser={currentUser}
@@ -442,6 +442,9 @@ const ListingHotel = ({
                 className="w-full h-[350px] relative cursor-pointer"
                 src={destinations[0].image}
                 alt="destination image"
+                onClick={() => {
+                  searchHandler(destinations[0].name);
+                }}
               />
               <p className="absolute top-[20px] left-[10px] text-2xl text-light font-bold drop-shadow-md">
                 {destinations[0].name}
@@ -455,6 +458,9 @@ const ListingHotel = ({
                 className="w-full h-[350px] relative cursor-pointer"
                 src={destinations[1].image}
                 alt="destination image"
+                onClick={() => {
+                  searchHandler(destinations[1].name);
+                }}
               />
               <p className="absolute top-[20px] left-[10px] text-2xl text-light font-bold drop-shadow-md">
                 {destinations[1].name}
@@ -470,6 +476,9 @@ const ListingHotel = ({
                 className="w-full h-[300px] relative cursor-pointer"
                 src={destinations[2].image}
                 alt="destination image"
+                onClick={() => {
+                  searchHandler(destinations[2].name);
+                }}
               />
               <p className="absolute top-[20px] left-[10px] text-2xl text-light font-bold drop-shadow-md">
                 {destinations[2].name}
@@ -483,6 +492,9 @@ const ListingHotel = ({
                 className="w-full h-[300px] relative cursor-pointer"
                 src={destinations[3].image}
                 alt="destination image"
+                onClick={() => {
+                  searchHandler(destinations[3].name);
+                }}
               />
               <p className="absolute top-[20px] left-[10px] text-2xl text-light font-bold drop-shadow-md">
                 {destinations[3].name}
@@ -496,6 +508,9 @@ const ListingHotel = ({
                 className="w-full h-[300px] relative cursor-pointer"
                 src={destinations[4].image}
                 alt="destination image"
+                onClick={() => {
+                  searchHandler(destinations[4].name);
+                }}
               />
               <p className="absolute top-[20px] left-[10px] text-2xl text-light font-bold drop-shadow-md">
                 {destinations[4].name}

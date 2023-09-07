@@ -25,13 +25,14 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   const [editId, setEditId] = useState("");
 
   const onDelete = useCallback(
-    (id: string) => {
+    (id: string, index?: number) => {
       setDeletingId(id);
 
       axios
         .delete(`/api/accommodation/${id}`)
         .then(() => {
           toast.success("Accommodation deleted");
+
           router.refresh();
         })
         .catch((error) => {
@@ -72,7 +73,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           gap-8
         "
       >
-        {listings.map((listing: any) => (
+        {listings.map((listing: any, index) => (
           <ListingCard
             key={listing.id}
             data={listing}
@@ -82,6 +83,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             disabled={deletingId === listing.id || editId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}
+            index={index}
           />
         ))}
       </div>

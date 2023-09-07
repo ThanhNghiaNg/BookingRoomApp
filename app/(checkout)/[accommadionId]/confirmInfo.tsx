@@ -8,6 +8,11 @@ import CalendarZone from "./calendar";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-hot-toast";
+import {
+  createNewNotification,
+  pushNotification,
+} from "@/app/components/Notification/pushNotification";
+import { useRouter } from "next/navigation";
 
 interface Props {
   currentUser: SafeUser | null;
@@ -20,6 +25,7 @@ interface Props {
   };
   imageAccommodationUrl?: string;
   accommodationTitle?: string;
+  hostRoom?: string;
 }
 
 interface Plan {
@@ -36,8 +42,10 @@ const ConfirmInfo: React.FC<Props> = ({
   date,
   imageAccommodationUrl,
   accommodationTitle,
+  hostRoom,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -54,7 +62,7 @@ const ConfirmInfo: React.FC<Props> = ({
       endDate: date.endDate,
       totalPrice: price,
       id: id,
-      paymentOption: "",
+      paymentOption: "COD",
     },
   });
 
@@ -79,40 +87,101 @@ const ConfirmInfo: React.FC<Props> = ({
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log({ ...data, imageUrl: imageAccommodationUrl}); // Dữ liệu từ form ConfirmInfo
-    const session = await axios.post("/api/create-stripe-session", {
-      ...data,
-      imageUrl: imageAccommodationUrl,
-      title: accommodationTitle,
-    });
+    if (data.paymentOption !== "COD") {
+      const session = await axios.post("/api/create-stripe-session", {
+        ...data,
+        imageUrl: imageAccommodationUrl,
+        title: accommodationTitle,
+      });
 
-    // Add an api to save reservation to database with status is pending
-    // add a field sessionId to reservation
-    const reservation = await axios.post("/api/reservations", {
-      totalPrice,
-      startDate,
-      endDate,
-      stripeSessionId: session.data.sessionId,
-      accommodationId: data.id,
-      email,
-      name,
-      phone,
-      status: "pending",
-    });
+      // Add an api to save reservation to database with status is pending
+      // add a field sessionId to reservation
+      const reservation = await axios.post("/api/reservations", {
+        totalPrice,
+        startDate,
+        endDate,
+        stripeSessionId: session.data.sessionId,
+        accommodationId: data.id,
+        email,
+        name,
+        phone,
+        status: "pending",
+      });
 
-    if (!reservation) return toast.error("Something went wrong!");
+      if (!reservation) return toast.error("Something went wrong!");
 
-    const stripePromise = loadStripe(
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
-    );
+      const stripePromise = loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+      );
 
-    const stripe = await stripePromise;
+      const stripe = await stripePromise;
 
-    const result = await stripe?.redirectToCheckout({
-      sessionId: session.data.sessionId,
-    });
+      const result = await stripe?.redirectToCheckout({
+        sessionId: session.data.sessionId,
+      });
 
-    if (result?.error) {
-      toast.error(result.error.message || "");
+      const notificationData = {
+        content: "You have a new reservation!",
+        userId: hostRoom,
+        parnerID: currentUser?.id,
+        parnerAvatar: currentUser?.image || undefined,
+      };
+
+      await pushNotification(notificationData);
+
+      await createNewNotification({
+        data: [
+          "You have a new reservation!",
+          hostRoom || "",
+          "text",
+          currentUser?.id || "",
+          currentUser?.image || "",
+        ],
+      });
+
+      if (result?.error) {
+        toast.error(result.error.message || "");
+      }
+    } else {
+      const reservation = await axios
+        .post("/api/reservations", {
+          totalPrice,
+          startDate,
+          endDate,
+          stripeSessionId: "",
+          accommodationId: data.id,
+          email,
+          name,
+          phone,
+          status: "COD",
+        })
+        .then((res) => {
+          if (!!res) {
+            const notificationData = {
+              content: "You have a new reservation!",
+              userId: hostRoom,
+              parnerID: currentUser?.id,
+              parnerAvatar: currentUser?.image || undefined,
+            };
+
+            pushNotification(notificationData);
+
+            createNewNotification({
+              data: [
+                "You have a new reservation!",
+                hostRoom || "",
+                "Success",
+                currentUser?.id || "",
+                currentUser?.image || "",
+              ],
+            });
+          }
+        })
+        .then(() => [router.push("/host?tab=current")]);
+
+      if (!reservation) {
+        toast.error("Something Went Wrong!");
+      }
     }
   };
 

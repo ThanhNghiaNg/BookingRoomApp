@@ -18,6 +18,7 @@ import ParallaxHome from "./components/hero/ParallaxHome";
 import Recommendation from "./components/recommendation/Recommendation";
 import HobbiesModal from "./components/modals/HobbiesModal";
 import getUserPersonal from "./actions/getPersonal";
+import ListenerLogin from "./components/Notification/ListenerLogin";
 
 interface HomeProps {
   searchParams: IAccommodationParams;
@@ -28,6 +29,7 @@ const Home = async ({ searchParams }: HomeProps) => {
   const currentUser = await getCurrentUser();
   const userPersonal = await getUserPersonal(currentUser?.id);
 
+  // const accommodation = [];
   if (accommodation.length === 0) {
     return (
       <ClientOnly>
@@ -101,6 +103,10 @@ const Home = async ({ searchParams }: HomeProps) => {
         {/* <ClientOnly>
           <HobbiesModal currentUser={currentUser} userPersonal={userPersonal} />
         </ClientOnly> */}
+
+        <ClientOnly>
+          <ListenerLogin currentUser={currentUser} />
+        </ClientOnly>
       </div>
     </Container>
   );

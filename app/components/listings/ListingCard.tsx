@@ -21,13 +21,15 @@ import { Tooltip } from "antd";
 interface ListingCardProps {
   data: SafeAccommodation;
   reservation?: SafeReservation;
-  onAction?: (id: string) => void;
+  onAction?: (id: string, index?: number) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
   onEdit?: (id: string) => void;
   onClickCard?: () => void;
+  textColor?: string;
+  index?: number;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -40,6 +42,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
   onEdit,
   onClickCard,
+  textColor,
+  index,
 }) => {
   const router = useRouter();
 
@@ -51,9 +55,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
         return;
       }
 
-      onAction?.(actionId);
+      onAction?.(actionId, index);
     },
-    [disabled, onAction, actionId]
+    [disabled, onAction, actionId, index]
   );
 
   const handlerEdit = useCallback(
@@ -145,13 +149,20 @@ const ListingCard: React.FC<ListingCardProps> = ({
               placement="bottom"
               title={`${data?.address}, ${data?.area}`}
             >
-              <div className="font-semibold text-lg truncate">
+              <div
+                className={"font-semibold text-lg truncate" + textColor || ""}
+              >
                 {data?.address}, {data?.area}
               </div>
             </Tooltip>
           </h2>
           <div className="flex flex-col gap-3">
-            <div className="badge badge-ghost font-light text-neutral-500">
+            <div
+              className={
+                "badge badge-ghost font-light " +
+                (textColor ? textColor : "text-neutral-500")
+              }
+            >
               {reservationDate || data.properties}
             </div>
             <div className="card-actions">
@@ -160,7 +171,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 ?.map((element: any, index: number) => (
                   <div
                     key={index}
-                    className="badge badge-secondary badge-outline font-light text-neutral-500"
+                    className={
+                      "badge badge-secondary badge-outline font-ligh " +
+                      (textColor ? textColor : "text-neutral-500")
+                    }
                   >
                     {element}
                   </div>
@@ -169,8 +183,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
 
           <div className="card-actions justify-end">
-            <div className="font-semibold">$ {price}</div>
-            {!reservation && <div className="font-light">/ đêm</div>}
+            <div className={"font-semibold" + textColor || ""}>$ {price}</div>
+            {!reservation && <div className="font-light">/ night</div>}
           </div>
           {onAction && actionLabel && (
             <div className="flex justify-between">

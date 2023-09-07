@@ -93,7 +93,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
         </button>
         <button
           className="dropdown-item px-4 py-3 hover:bg-neutral-100 transition font-semibold"
-          onClick={() => handleItemClick("/properties")}
+          onClick={() => handleItemClick("/host?tab=host")}
         >
           Manage Properties
         </button>

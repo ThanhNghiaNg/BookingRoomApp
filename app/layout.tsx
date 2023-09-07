@@ -17,6 +17,7 @@ import RemoveLoader from "./components/removeLoader";
 import ScreenCheck from "./components/ScreenCheck";
 import ChatAI from "./components/floatButton/ChatAI";
 import ChatRecommendModal from "./components/floatButton/ModalRecommend";
+import Notification from "./components/Notification";
 
 export const metadata = {
   title: "Travel Nest",
@@ -53,6 +54,7 @@ export default async function RootLayout({
             <RemoveLoader />
             <ScreenCheck />
             <ChatRecommendModal />
+            <Notification />
           </ClientOnly>
           <ClientOnly>
             <ChatAI />

@@ -135,7 +135,7 @@ export default function SearchAccommodationClient({
           searchParams={searchParams}
         />
       </div>
-      <div className="flex gap-6">
+      <div className="flex gap-6 mt-5">
         <div className="w-[15%]">
           <div className="sticky top-30">
             <SearchAccomodationFilter
