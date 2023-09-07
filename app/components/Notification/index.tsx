@@ -17,7 +17,7 @@ const pusher = new Pusher(NEXT_PUBLIC_PUSHER_KEY, {
 });
 
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { SafeUser } from "@/app/types";
 import isUserLoginModal from "@/app/hooks/useIsLogin";
 import { createNewNotification, pushNotification } from "./pushNotification";
@@ -26,6 +26,30 @@ const Notification = () => {
   const [currentUser, setCurrentUser] = useState<SafeUser | null>();
 
   const { isLogin } = isUserLoginModal();
+
+  const notify = (data: string) => {
+    if (data.split("*/*/*")[2] === "Cancel") {
+      toast.error(
+        (t) => (
+          <div onClick={() => toast.dismiss(t.id)}>
+            `{data.split("*/*/*")[1]}
+            {"\n"} Please check your notification to get more information`
+          </div>
+        ),
+        { duration: 30000, position: "bottom-left" }
+      );
+    } else {
+      toast.success(
+        (t) => (
+          <div onClick={() => toast.dismiss(t.id)}>
+            `{data.split("*/*/*")[1]}
+            {"\n"} Please check your notification to get more information`
+          </div>
+        ),
+        { duration: 30000, position: "bottom-left" }
+      );
+    }
+  };
 
   useEffect(() => {
     try {
@@ -44,16 +68,17 @@ const Notification = () => {
       console.log("notification data", data);
 
       if (!!data && currentUser?.id === data.split("*/*/*")[0]) {
-        toast.success(
-          (t) => (
-            <div onClick={() => toast.dismiss(t.id)}>
-              `{data.split("*/*/*")[1]}
-              {"\n"} Please check your notification to get more information`
-            </div>
-          ),
+        // toast.success(
+        //   (t) => (
+        //     <div onClick={() => toast.dismiss(t.id)}>
+        //       `{data.split("*/*/*")[1]}
+        //       {"\n"} Please check your notification to get more information`
+        //     </div>
+        //   ),
 
-          { duration: 60000, position: "bottom-left" }
-        );
+        //   { duration: 60000, position: "bottom-left" }
+        // );
+        notify(data);
 
         // createNewNotification({
         //   data: data.split("*/*/*"),
