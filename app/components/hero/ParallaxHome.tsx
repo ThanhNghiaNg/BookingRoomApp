@@ -13,7 +13,7 @@ import Link from "next/link";
 import Search from "../navbar/Search";
 
 const parrallax = {
-  backgroundImage: `url("https://res.cloudinary.com/dqrm0sqsu/image/upload/v1693752971/photo-1653537276528-7814aee01641_k8lcgw.avif")`,
+  backgroundImage: `url("https://res.cloudinary.com/dqrm0sqsu/image/upload/v1694078446/photo-1602600133122-b6f21c212484_optrpu.avif")`,
   backgroundAttachment: "fixed",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
@@ -33,9 +33,9 @@ const ParallaxHome = () => {
       /> */}
       <div
         style={parrallax}
-        className="relative flex items-center justify-center xl:mx-[-80px] width-full h-[100vh]"
+        className="relative flex items-center justify-center xl:mx-[-80px] width-full h-[100vh] z-0"
       >
-        <div className="absolute flex flex-col items-center justify-center">
+        <div className="absolute flex flex-col items-center justify-center z-10">
           <AnimatedText
             text="Travel Nest"
             classname=" xl:!text-[7rem] text-rose-600

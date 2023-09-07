@@ -170,7 +170,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
           <div className="card-actions justify-end">
             <div className="font-semibold">$ {price}</div>
-            {!reservation && <div className="font-light">/ đêm</div>}
+            {!reservation && <div className="font-light">/ night</div>}
           </div>
           {onAction && actionLabel && (
             <div className="flex justify-between">

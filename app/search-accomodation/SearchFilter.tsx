@@ -141,14 +141,13 @@ export default function SearchFilter({
     });
   });
   return (
-    <div className="flex gap-4 justify-center align-bottom">
-      <div>
-        <Input
+    <div className="flex gap-4 justify-center align-bottom ">
+      <div className="">
+        <TextField
           id="location"
           label="Anywhere"
-          register={register}
-          errors={errors}
           required
+          {...register("location", { required: true })}
         />
       </div>
       <div onFocus={handleFocus} className="flex flex-col items-end">
