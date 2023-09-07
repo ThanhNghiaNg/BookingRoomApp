@@ -208,7 +208,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     >
       <div className="flex flex-row items-center gap-1 p-4 ">
         <div className="z-10 text-2xl font-semibold">$ {price}</div>
-        <div className="z-10 font-light text-neutral-600"> / night</div>
+        <div className="z-10 font-light text-neutral-600"> / đêm</div>
       </div>
       <div onFocus={handleFocus} className="flex flex-col items-end">
         <hr className="z-10 w-full" />

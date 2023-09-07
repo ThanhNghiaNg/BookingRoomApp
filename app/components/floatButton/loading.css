@@ -1,20 +1,20 @@
 .loader {
-    color: #000;
+    color: #fb06a4;
     position: relative;
     display: inline-block;
     margin-top: 40px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 48px;
-    letter-spacing: 4px;
+    font-size: 44px;
+    letter-spacing: 3.5px;
     box-sizing: border-box;
   }
   .loader::before {
     content: '';  
     position: absolute;
-    right: 70px;
-    bottom: 10px;
+    right: 63px;
+    bottom: 3px;
     height: 28px;
-    width: 5.15px;
+    width: 7px;
     background: currentColor;
     box-sizing: border-box;
     animation: animloader1 1s linear infinite alternate;
@@ -37,7 +37,7 @@
       transform: translate(0px, 0px) scaleX(1);
     }
     14% {
-      transform: translate(-12px, -16px) scaleX(1.05);
+      transform: translate(-12px, -16px) scaleX(1);
     }
     28% {
       transform: translate(-27px, -28px) scaleX(1.07);

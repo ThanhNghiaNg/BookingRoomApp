@@ -682,20 +682,7 @@ export default function ContentComponent({
     SafeReservation[]
   >([]);
 
-  useEffect(() => {
-    axios
-      .post("/api/reversation-list", {})
-      .then((res) => {
-        if (res?.data?.safeReservations) {
-          setReservationListData(res?.data?.safeReservations);
-        } else {
-          setReservationListData([]);
-        }
-      })
-      .catch((err) => {
-        // console.log("err", err);
-      });
-  }, []);
+  const router = useRouter();
 
   const historyReservation: SafeReservation[] = [];
   const currentReservations: SafeReservation[] = [];
@@ -712,13 +699,42 @@ export default function ContentComponent({
 
   const totalPage = 0;
 
-  const [tab, setTab] = useState(
-    tabName ? tabName : accommodation?.length ? "host" : "current"
-  );
+  const [tab, setTab] = useState(tabName ? tabName : "current");
 
   const onChangeTab = (data: string) => {
     setTab(data);
   };
+
+  useEffect(() => {
+    axios
+      .post("/api/reversation-list", {})
+      .then((res) => {
+        if (res?.data?.safeReservations) {
+          setReservationListData(res?.data?.safeReservations);
+        } else {
+          setReservationListData([]);
+        }
+      })
+      .catch((err) => {
+        // console.log("err", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.refresh();
+    } else if (tabName === "host" && !accommodation?.length && currentUser) {
+      router.push("/createroom/about");
+    }
+  }, [accommodation, currentUser, router, tabName]);
+
+  useEffect(() => {
+    setTab(accommodation?.length ? "host" : "current");
+  }, [accommodation]);
+
+  useEffect(() => {
+    setTab(tabName);
+  }, [tabName]);
 
   let tabContent;
   if (tab === "host") {
@@ -758,7 +774,12 @@ export default function ContentComponent({
     <div className="w-full min-h-full">
       <div>
         <Tab.Group>
-          <Tab.List className="flex self-center p-1 space-x-1 rounded-xl  w-1/3 max-w-[400px] absolute top-4 left-1/3 z-50">
+          <Tab.List
+            className={
+              "self-center p-1 space-x-1 rounded-xl  w-1/3 max-w-[400px] absolute top-4 left-1/3 z-50" +
+              (!!accommodation.length ? " flex" : " hidden")
+            }
+          >
             {/* <Tab.List className="flex self-center p-1 space-x-1 rounded-xl  w-1/3 max-w-[400px] z-50"> */}
             {tabList.map((category) => (
               <Tab
@@ -784,7 +805,11 @@ export default function ContentComponent({
                   <Heading title="Welcome" />
                 </div>
                 <h1 className="text-xl font-bold mb-5">Your reservations</h1>
-                <NavHistory onClick={onChangeTab} current={tab} />
+                <NavHistory
+                  onClick={onChangeTab}
+                  current={tab}
+                  isHost={!!accommodation.length}
+                />
                 <div className="my-5">{tabContent}</div>
 
                 {/* help view */}

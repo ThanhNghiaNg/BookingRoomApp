@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 
 interface Plan {
-  id:string|number;
+  id: string | number;
   name: string;
   option: string;
   descrip: string;
@@ -12,20 +12,11 @@ interface Plan {
 
 interface PaymentOptionProps {
   plans: Plan[];
-  value: Plan;
   onChange: (selectedPlan: Plan) => void;
 }
 
-export default function PaymentOption({
-  plans,
-  value,
-  onChange,
-}: PaymentOptionProps) {
+export default function PaymentOption({ plans, onChange }: PaymentOptionProps) {
   const [selected, setSelected] = useState(plans[0]);
-
-  useEffect(() => {
-    setSelected(value);
-  }, [value]);
 
   return (
     <div className="w-full px-4 py-16">

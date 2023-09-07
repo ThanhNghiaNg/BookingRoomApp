@@ -21,7 +21,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   reservations,
   currentUser,
   useAction,
-  title
+  title,
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
@@ -61,32 +61,34 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           gap-8
         "
       >
-        {useAction && reservations.map((reservation: any) => {
-          return (
-            <ListingCard
-              key={reservation.id}
-              data={reservation.accommodation}
-              reservation={reservation}
-              actionId={reservation.id}
-              disabled={deletingId === reservation.id}
-              onAction={onCancel}
-              actionLabel="Cancel guest reservation"
-              currentUser={currentUser}
-            />
-          );
-        })}
-        {!useAction && reservations.map((reservation: any) => {
-          return (
-            <ListingCard
-              key={reservation.id}
-              data={reservation.accommodation}
-              reservation={reservation}
-              actionId={reservation.id}
-              disabled={deletingId === reservation.id}
-              currentUser={currentUser}
-            />
-          );
-        })}
+        {useAction &&
+          reservations.map((reservation: any) => {
+            return (
+              <ListingCard
+                key={reservation.id}
+                data={reservation.accommodation}
+                reservation={reservation}
+                actionId={reservation.id}
+                disabled={deletingId === reservation.id}
+                onAction={onCancel}
+                actionLabel="Cancel guest reservation"
+                currentUser={currentUser}
+              />
+            );
+          })}
+        {!useAction &&
+          reservations.map((reservation: any) => {
+            return (
+              <ListingCard
+                key={reservation.id}
+                data={reservation.accommodation}
+                reservation={reservation}
+                actionId={reservation.id}
+                disabled={deletingId === reservation.id}
+                currentUser={currentUser}
+              />
+            );
+          })}
       </div>
     </>
   );

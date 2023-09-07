@@ -8,15 +8,15 @@ import { Tooltip } from "@mui/material";
 const HELP_DATA = [
   {
     icon: <BiMedal />,
-    title: "Hướng dẫn từ một Chủ nhà siêu cấp",
+    title: "Instructions from a Superhost",
     content:
-      "Chúng tôi sẽ kết nối bạn với một Chủ nhà giàu kinh nghiệm để giúp bạn bắt đầu.",
+      "We'll connect you with an experienced Landlord to help you get started.",
   },
   {
     icon: <BsHeadset />,
-    title: "Liên hệ bộ phận hỗ trợ đặc biệt",
+    title: "Contact special support",
     content:
-      "Là Chủ nhà mới, bạn có thể liên hệ với nhóm hỗ trợ đã được đào tạo đặc biệt chỉ với một thao tác&nbsp;nhấn.",
+      "As a new Host, you can contact a specially trained support team with just one tap.",
   },
 ];
 
@@ -24,23 +24,23 @@ const RESOURCE_DATA = [
   {
     image:
       "https://kenh14cdn.com/thumb_w/620/2020/4/9/money-heist-season-4-2019-l7-15864079843781659894823.jpg",
-    title: "Cách nhận tiền chi trả khi đón tiếp khách",
+    title: "How to receive payment when welcoming guests",
   },
   {
     image:
       "https://cdn.tgdd.vn/Files/2020/03/18/1242957/4448367_chup_anh_bphone_3_800x450.jpg",
-    title: "Cách  chụp ảnh đẹp bằng điện thoại",
+    title: "How to take beautiful photos with your phone",
   },
   {
     image:
       "https://reviewvilla.vn/wp-content/uploads/2022/05/quan-cafe-dep-o-Sapa-3.jpg",
-    title:
-      "Các tốt nhất để thiết lập các tùy chọn cài đặt về lịch và đặt phòng",
+    title: "Best practices for setting up calendar and booking settings",
   },
   {
     image:
       "https://minhuongpynie.com/wp-content/uploads/2021/01/viet-lach-la-gi-10-840x400.jpg",
-    title: "Cách viết nọi dung mô tả hiêu quả cho nhà/phòng cho thuê",
+    title:
+      "How to write effective description content for a house/room for rent",
   },
 ];
 
@@ -49,9 +49,7 @@ function HelpClient({ currentUser }: { currentUser: SafeUser | null }) {
     <>
       {/* help view */}
       <div className="flex flex-col w-full">
-        <p className="mb-5 text-2xl text-black">
-          Chúng tôi luôn sẵn sàng trợ giúp
-        </p>
+        <p className="mb-5 text-2xl text-black">We're always here to help</p>
         <Tooltip
           title="Coming soon in next version"
           disableFocusListener
@@ -80,7 +78,7 @@ function HelpClient({ currentUser }: { currentUser: SafeUser | null }) {
       </div>
 
       <div className="flex flex-col w-full mt-16">
-        <p className="mb-5 text-2xl text-black">Tài nguyên và mẹo</p>
+        <p className="mb-5 text-2xl text-black">Resources and tips</p>
         <Tooltip
           title="Coming soon in next version"
           disableFocusListener

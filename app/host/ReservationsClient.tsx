@@ -9,6 +9,10 @@ import { SafeReservation, SafeUser } from "@/app/types";
 import Heading from "@/app/components/Heading";
 
 import ListingCard from "@/app/components/listings/ListingCard";
+import {
+  createNewNotification,
+  pushNotification,
+} from "../components/Notification/pushNotification";
 
 interface ReservationsClientProps {
   reservations: SafeReservation[];
@@ -27,13 +31,33 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   const [deletingId, setDeletingId] = useState("");
 
   const onCancel = useCallback(
-    (id: string) => {
+    (id: string, index?: number) => {
       setDeletingId(id);
 
       axios
         .delete(`/api/reservations/${id}`)
         .then(() => {
           toast.success("Reservation cancelled");
+          if (index !== undefined) {
+            const notificationData = {
+              content: `Your reservation with ${reservations[index].id} ID is canceled`,
+              userId: reservations[index].accommodation.userId,
+              parnerID: currentUser?.id,
+              parnerAvatar: currentUser?.image || undefined,
+            };
+
+            pushNotification(notificationData);
+
+            createNewNotification({
+              data: [
+                `Your reservation with ${reservations[index].id} ID is canceled`,
+                reservations[index].accommodation.userId || "",
+                "Cancel",
+                currentUser?.id || "",
+                currentUser?.image || "",
+              ],
+            });
+          }
           router.refresh();
         })
         .catch(() => {
@@ -43,7 +67,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           setDeletingId("");
         });
     },
-    [router]
+    [router, reservations, currentUser]
   );
 
   return (
@@ -63,7 +87,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         "
       >
         {!useAction &&
-          reservations.map((reservation: any) => {
+          reservations.map((reservation: any, index) => {
             return (
               <ListingCard
                 key={reservation.id}
@@ -77,7 +101,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           })}
 
         {useAction &&
-          reservations.map((reservation: any) => {
+          reservations.map((reservation: any, index) => {
             return (
               <ListingCard
                 key={reservation.id}
@@ -88,6 +112,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                 onAction={onCancel}
                 actionLabel="Cancel guest reservation"
                 currentUser={currentUser}
+                index={index}
               />
             );
           })}

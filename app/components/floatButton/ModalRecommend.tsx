@@ -63,27 +63,26 @@ function ChatRecommendModal() {
   }
 
   const handleSearch = async () => {
-    if (isLoading) {
-      setIsLoading(true);
-      try {
-        const data: any[] = await getProvinceList({ input: inputValue });
-        setRecommendDestination(data);
+    setIsLoading(true);
+    try {
+      const data: any[] = await getProvinceList({ input: inputValue });
+      setRecommendDestination(data);
 
-        const response = await axios.post(`/api/accommodation/chatAI`, {
-          locations: data.map((item) => {
-            return item?.name;
-          }),
-        });
-        setAccommodationsRecommned(response.data);
+      const response = await axios.post(`/api/accommodation/chatAI`, {
+        locations: data.map((item) => {
+          return item?.name;
+        }),
+      });
+      setAccommodationsRecommned(response.data);
 
-        console.log(response.data);
-      } catch (error) {
-        // to do
-      }
-
-      setIsLoading(false);
+      console.log("maping data", response.data);
+    } catch (error) {
+      // to do
     }
+
+    setIsLoading(false);
   };
+
   const [accommodation, setAccommodation] = useState<SafeAccommodation[]>([]);
 
   useEffect(() => {
@@ -107,7 +106,7 @@ function ChatRecommendModal() {
         ) || accommodationsRecommned.includes((item?.id as string) || "")
       );
     });
-    setRenderData(temp);
+    setRenderData([...temp]);
   }, [accommodationsRecommned, accommodation]);
 
   const bodyContent = (
@@ -120,9 +119,19 @@ function ChatRecommendModal() {
             placeholder="Please provide your wishes and description about the place you want to go. "
             className="px-3 py-3 placeholder-slate-400 text-slate-800 relative bg-white rounded text-lg border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
           />
-          <span className="z-10 h-full leading-snug font-normal text-center text-[#fb06a4] absolute rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
-            <AiOutlineSearch size={25} onClick={handleSearch} />
-          </span>
+          <button
+            onClick={handleSearch}
+            disabled={isLoading}
+            className={
+              "z-10 h-full leading-snug font-normal text-center text-[#fb06a4] absolute rounded text-base items-center justify-center right-0 pr-3 py-3 pl-3" +
+              (isLoading ? " bg-slate-200" : "")
+            }
+          >
+            <AiOutlineSearch
+              size={25}
+              // onClick={handleSearch}
+            />
+          </button>
         </div>
       </div>
       <div className="text-white font-bold py-36 text-center space-y-5">
@@ -133,16 +142,21 @@ function ChatRecommendModal() {
           grid 
           grid-cols-1 
           sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4
-          xl:grid-cols-5
-          2xl:grid-cols-6
+          md:grid-cols-2 
+          lg:grid-cols-3
+          xl:grid-cols-4
+          2xl:grid-cols-4
           gap-8
-          bg-slate-800
+          w-full
+          over
         "
           >
             {renderData.map((item) => (
-              <ListingCard data={item} key={item.id} />
+              <ListingCard
+                data={item}
+                key={item.id}
+                textColor={" text-black"}
+              />
             ))}
           </div>
         ) : (
