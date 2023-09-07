@@ -15,6 +15,7 @@ export async function POST(request: Request) {
         },
         data: {
           status: "success",
+          paymentId: data.object.payment_intent,
         },
       });
 
