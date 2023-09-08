@@ -17,6 +17,7 @@ import {
 
 function ConfirmCancelModal() {
   const confirmModal = useConfirmCancelModal();
+  const router = useRouter();
 
   const reservationsProp: any = {
     reservations: confirmModal.infoRoom?.reservations,
@@ -32,7 +33,7 @@ function ConfirmCancelModal() {
     console.log({ postRefund: postRefund.data });
 
     const notificationData = {
-      content: `Your reservation with is canceled`,
+      content: `Your reservation '${reservationsProp.reservations}' is canceled`,
       userId: reservationsProp.reservations.accommodation.userId,
       parnerID: reservationsProp.reservations.userId,
     };
@@ -46,6 +47,10 @@ function ConfirmCancelModal() {
         reservationsProp.reservations.userId || "",
       ],
     });
+
+    confirmModal.onClose();
+
+    router.refresh();
   };
 
   const bodyContent = (

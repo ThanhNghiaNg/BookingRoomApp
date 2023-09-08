@@ -688,11 +688,11 @@ export default function ContentComponent({
   const currentReservations: SafeReservation[] = [];
   const myRoom: SafeReservation[] = [];
 
-  reservationListData?.forEach((item: SafeReservation) => {
+  reservationListData?.forEach((item) => {
     if (item.userId === currentUser?.id) {
       if (new Date(item.endDate).getTime() < today.getTime()) {
         historyReservation.push(item);
-      } else {
+      } else if (item?.status !== "refund") {
         currentReservations.push(item);
       }
     }

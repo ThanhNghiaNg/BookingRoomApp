@@ -26,6 +26,7 @@ export default async function getReservations(params: IParams) {
     if (authorId) {
       query.accommodation = { userId: authorId };
     }
+
     query.NOT = {
       status: "refund",
     };

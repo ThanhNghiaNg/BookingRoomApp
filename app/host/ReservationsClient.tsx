@@ -139,7 +139,9 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             })}
         </div>
       ) : (
-        <text>No Have Record Data</text>
+        <div className="h-[400px] flex items-center justify-center">
+          <text className="text-red-600">No Have Record Data</text>
+        </div>
       )}
     </>
   );

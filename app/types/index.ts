@@ -17,6 +17,7 @@ export type SafeReservation = Omit<
   endDate: string;
   accommodation: SafeAccommodation;
   roomOwnId?: string;
+  status?: string;
 };
 
 export type SafeUser = Omit<
