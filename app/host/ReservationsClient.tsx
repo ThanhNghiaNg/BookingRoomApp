@@ -13,6 +13,7 @@ import {
   createNewNotification,
   pushNotification,
 } from "../components/Notification/pushNotification";
+import { useConfirmCancelModal } from "../hooks/useConfrimModal";
 
 interface ReservationsClientProps {
   reservations: SafeReservation[];
@@ -29,6 +30,8 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
+
+  const confirmCancelModal = useConfirmCancelModal();
 
   const onCancel = useCallback(
     (id: string, index?: number) => {
@@ -69,6 +72,12 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           .finally(() => {
             setDeletingId("");
           });
+      } else {
+        const reservationData = {
+          reservations: reservation,
+        };
+
+        confirmCancelModal.onOpen(reservationData);
       }
     },
     [router, reservations, currentUser]

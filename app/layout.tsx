@@ -18,6 +18,7 @@ import ScreenCheck from "./components/ScreenCheck";
 import ChatAI from "./components/floatButton/ChatAI";
 import ChatRecommendModal from "./components/floatButton/ModalRecommend";
 import Notification from "./components/Notification";
+import ConfirmCancelModal from "./components/modals/ConfirmCancelRoom";
 
 export const metadata = {
   title: "Travel Nest",
@@ -55,6 +56,7 @@ export default async function RootLayout({
             <ScreenCheck />
             <ChatRecommendModal />
             <Notification />
+            <ConfirmCancelModal />
           </ClientOnly>
           <ClientOnly>
             <ChatAI />
