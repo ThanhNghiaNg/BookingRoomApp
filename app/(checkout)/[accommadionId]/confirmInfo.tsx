@@ -148,7 +148,7 @@ const ConfirmInfo: React.FC<Props> = ({
           totalPrice,
           startDate,
           endDate,
-          stripeSessionId: "",
+          stripeSessionId: "0",
           accommodationId: data.id,
           email,
           name,

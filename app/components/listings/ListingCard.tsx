@@ -157,12 +157,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             </Tooltip>
           </h2>
           <div className="flex flex-col gap-3">
-            <div
-              className={
-                "badge badge-ghost font-light " +
-                (textColor ? textColor : "text-neutral-500")
-              }
-            >
+            <div className={"badge badge-ghost font-light text-neutral-500"}>
               {reservationDate || data.properties}
             </div>
             <div className="card-actions">
@@ -172,8 +167,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
                   <div
                     key={index}
                     className={
-                      "badge badge-secondary badge-outline font-ligh " +
-                      (textColor ? textColor : "text-neutral-500")
+                      "badge badge-secondary badge-outline font-ligh text-neutral-500"
                     }
                   >
                     {element}
@@ -187,7 +181,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             {!reservation && <div className="font-light">/ night</div>}
           </div>
           {onAction && actionLabel && (
-            <div className="flex justify-between">
+            <div className="flex justify-between w-full gap-2">
               <div>
                 <Button
                   disabled={disabled}
