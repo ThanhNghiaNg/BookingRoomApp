@@ -34,38 +34,42 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     (id: string, index?: number) => {
       setDeletingId(id);
 
-      axios
-        .delete(`/api/reservations/${id}`)
-        .then(() => {
-          toast.success("Reservation cancelled");
-          if (index !== undefined) {
-            const notificationData = {
-              content: `Your reservation with ${reservations[index].id} ID is canceled`,
-              userId: reservations[index].accommodation.userId,
-              parnerID: currentUser?.id,
-              parnerAvatar: currentUser?.image || undefined,
-            };
+      const reservation = reservations.find((r) => r.id === id);
 
-            pushNotification(notificationData);
+      if (reservation?.status === "COD") {
+        axios
+          .delete(`/api/reservations/${id}`)
+          .then(() => {
+            toast.success("Reservation cancelled");
+            if (index !== undefined) {
+              const notificationData = {
+                content: `Your reservation with ${reservations[index].id} ID is canceled`,
+                userId: reservations[index].accommodation.userId,
+                parnerID: currentUser?.id,
+                parnerAvatar: currentUser?.image || undefined,
+              };
 
-            createNewNotification({
-              data: [
-                `Your reservation with ${reservations[index].id} ID is canceled`,
-                reservations[index].accommodation.userId || "",
-                "Cancel",
-                currentUser?.id || "",
-                currentUser?.image || "",
-              ],
-            });
-          }
-          router.refresh();
-        })
-        .catch(() => {
-          toast.error("Something went wrong.");
-        })
-        .finally(() => {
-          setDeletingId("");
-        });
+              pushNotification(notificationData);
+
+              createNewNotification({
+                data: [
+                  `Your reservation with ${reservations[index].id} ID is canceled`,
+                  reservations[index].accommodation.userId || "",
+                  "Cancel",
+                  currentUser?.id || "",
+                  currentUser?.image || "",
+                ],
+              });
+            }
+            router.refresh();
+          })
+          .catch(() => {
+            toast.error("Something went wrong.");
+          })
+          .finally(() => {
+            setDeletingId("");
+          });
+      }
     },
     [router, reservations, currentUser]
   );
@@ -82,7 +86,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           md:grid-cols-3 
           lg:grid-cols-4
           xl:grid-cols-5
-          2xl:grid-cols-6
+          2xl:grid-cols-5
           gap-8
         "
       >
@@ -110,7 +114,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                 actionId={reservation.id}
                 disabled={deletingId === reservation.id}
                 onAction={onCancel}
-                actionLabel="Cancel guest reservation"
+                actionLabel="Cancel reservation"
                 currentUser={currentUser}
                 index={index}
               />
