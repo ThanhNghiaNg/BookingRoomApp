@@ -47,7 +47,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   onClickCard,
   textColor,
   index,
-  editMode = true,
+  editMode = false,
   editPosition = "bottom",
   actionPosition = "bottom",
 }) => {
