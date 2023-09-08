@@ -358,7 +358,7 @@ const ListingHotel = ({
                   currentUser={currentUser}
                   key={element.id}
                   data={element}
-                />{" "}
+                />
               </div>
             ))}
           </AliceCarousel>

@@ -8,7 +8,7 @@ interface IParams {
 }
 
 export async function DELETE(
-  request: Request, 
+  request: Request,
   { params }: { params: IParams }
 ) {
   const currentUser = await getCurrentUser();
@@ -19,8 +19,8 @@ export async function DELETE(
 
   const { reservationId } = params;
 
-  if (!reservationId || typeof reservationId !== 'string') {
-    throw new Error('Invalid ID');
+  if (!reservationId || typeof reservationId !== "string") {
+    throw new Error("Invalid ID");
   }
 
   const reservation = await prisma.reservation.deleteMany({
@@ -28,9 +28,31 @@ export async function DELETE(
       id: reservationId,
       OR: [
         { userId: currentUser.id },
-        { accommodation: { userId: currentUser.id } }
-      ]
-    }
+        { accommodation: { userId: currentUser.id } },
+      ],
+    },
+  });
+
+  return NextResponse.json(reservation);
+}
+
+export async function GET(request: Request, { params }: { params: IParams }) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+
+  const { reservationId } = params;
+
+  if (!reservationId || typeof reservationId !== "string") {
+    throw new Error("Invalid ID");
+  }
+
+  const reservation = await prisma.reservation.findFirst({
+    where: {
+      id: reservationId,
+    },
   });
 
   return NextResponse.json(reservation);
