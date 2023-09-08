@@ -116,39 +116,45 @@ const ConfirmInfo: React.FC<Props> = ({
 
       const stripe = await stripePromise;
 
-      const result = await stripe?.redirectToCheckout({
-        sessionId: session.data.sessionId,
-      });
+      const result = await stripe
+        ?.redirectToCheckout({
+          sessionId: session.data.sessionId,
+        })
+        .then((res) => {
+          if (!res?.error) {
+            const notificationData = {
+              content: "You have a new reservation!",
+              userId: hostRoom,
+              parnerID: currentUser?.id,
+              parnerAvatar: currentUser?.image || undefined,
+            };
 
-      const notificationData = {
-        content: "You have a new reservation!",
-        userId: hostRoom,
-        parnerID: currentUser?.id,
-        parnerAvatar: currentUser?.image || undefined,
-      };
+            pushNotification(notificationData);
 
-      await pushNotification(notificationData);
+            createNewNotification({
+              data: [
+                "You have a new reservation!",
+                hostRoom || "",
+                "text",
+                currentUser?.id || "",
+                currentUser?.image || "",
+              ],
+            });
+          }
 
-      await createNewNotification({
-        data: [
-          "You have a new reservation!",
-          hostRoom || "",
-          "text",
-          currentUser?.id || "",
-          currentUser?.image || "",
-        ],
-      });
+          return res;
+        });
 
       if (result?.error) {
         toast.error(result.error.message || "");
       }
     } else {
-      const reservation = await axios
+      await axios
         .post("/api/reservations", {
           totalPrice,
           startDate,
           endDate,
-          stripeSessionId: "0",
+          stripeSessionId: "null",
           accommodationId: data.id,
           email,
           name,
@@ -177,11 +183,10 @@ const ConfirmInfo: React.FC<Props> = ({
             });
           }
         })
-        .then(() => [router.push("/host?tab=current")]);
-
-      if (!reservation) {
-        toast.error("Something Went Wrong!");
-      }
+        .then(() => [router.push("/host?tab=current")])
+        .catch(() => {
+          toast.error("Something Went Wrong!");
+        });
     }
   };
 

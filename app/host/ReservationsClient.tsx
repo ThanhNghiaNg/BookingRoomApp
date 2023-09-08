@@ -20,6 +20,8 @@ interface ReservationsClientProps {
   currentUser: SafeUser | null;
   useAction?: boolean;
   title?: string;
+  editMode?: boolean;
+  actionPosition?: "bottom" | "price";
 }
 
 const ReservationsClient: React.FC<ReservationsClientProps> = ({
@@ -27,6 +29,8 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   useAction,
   currentUser,
   title,
+  editMode,
+  actionPosition = "bottom",
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
@@ -86,8 +90,9 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   return (
     <>
       {/* <h1 className="text-xl font-bold">{title}</h1> */}
-      <div
-        className="
+      {!!reservations.length ? (
+        <div
+          className="
           mt-10
           grid 
           grid-cols-1 
@@ -98,38 +103,44 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           2xl:grid-cols-5
           gap-8
         "
-      >
-        {!useAction &&
-          reservations.map((reservation: any, index) => {
-            return (
-              <ListingCard
-                key={reservation.id}
-                data={reservation.accommodation}
-                reservation={reservation}
-                actionId={reservation.id}
-                disabled={deletingId === reservation.id}
-                currentUser={currentUser}
-              />
-            );
-          })}
+        >
+          {!useAction &&
+            reservations.map((reservation: any, index) => {
+              return (
+                <ListingCard
+                  key={reservation.id}
+                  data={reservation.accommodation}
+                  reservation={reservation}
+                  actionId={reservation.id}
+                  disabled={deletingId === reservation.id}
+                  currentUser={currentUser}
+                  editMode={false}
+                />
+              );
+            })}
 
-        {useAction &&
-          reservations.map((reservation: any, index) => {
-            return (
-              <ListingCard
-                key={reservation.id}
-                data={reservation.accommodation}
-                reservation={reservation}
-                actionId={reservation.id}
-                disabled={deletingId === reservation.id}
-                onAction={onCancel}
-                actionLabel="Cancel reservation"
-                currentUser={currentUser}
-                index={index}
-              />
-            );
-          })}
-      </div>
+          {useAction &&
+            reservations.map((reservation: any, index) => {
+              return (
+                <ListingCard
+                  key={reservation.id}
+                  data={reservation.accommodation}
+                  reservation={reservation}
+                  actionId={reservation.id}
+                  disabled={deletingId === reservation.id}
+                  onAction={onCancel}
+                  actionLabel="Cancel reservation"
+                  currentUser={currentUser}
+                  index={index}
+                  editMode={editMode}
+                  actionPosition={actionPosition}
+                />
+              );
+            })}
+        </div>
+      ) : (
+        <text>No Have Record Data</text>
+      )}
     </>
   );
 };

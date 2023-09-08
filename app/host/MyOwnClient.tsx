@@ -10,6 +10,11 @@ import Heading from "@/app/components/Heading";
 
 import ListingCard from "@/app/components/listings/ListingCard";
 import Calendar from "./Calendar";
+import {
+  createNewNotification,
+  pushNotification,
+} from "../components/Notification/pushNotification";
+import { TbRuler2Off } from "react-icons/tb";
 
 interface MyOwnClientProps {
   room: any[];
@@ -28,6 +33,48 @@ const MyOwnClient: React.FC<MyOwnClientProps> = ({
   const onClickCard = (room: any) => {
     setSelectId(room.id);
   };
+
+  const [deletingId, setDeletingId] = useState("");
+
+  const onCancel = useCallback(
+    (id: string, index?: number) => {
+      setDeletingId(id);
+
+      axios
+        .delete(`/api/reservations/${id}`)
+        .then(() => {
+          toast.success("Reservation cancelled");
+          if (index !== undefined) {
+            const notificationData = {
+              content: `Your reservation with ${ReservationListData[index].id} ID is canceled`,
+              userId: ReservationListData[index].accommodation.userId,
+              parnerID: currentUser?.id,
+              parnerAvatar: currentUser?.image || undefined,
+            };
+
+            pushNotification(notificationData);
+
+            createNewNotification({
+              data: [
+                `Your reservation with ${ReservationListData[index].id} ID is canceled`,
+                ReservationListData[index].accommodation.userId || "",
+                "Cancel",
+                currentUser?.id || "",
+                currentUser?.image || "",
+              ],
+            });
+          }
+          router.refresh();
+        })
+        .catch(() => {
+          toast.error("Something went wrong.");
+        })
+        .finally(() => {
+          setDeletingId("");
+        });
+    },
+    [router, ReservationListData, currentUser]
+  );
 
   return (
     <>
@@ -60,11 +107,11 @@ const MyOwnClient: React.FC<MyOwnClientProps> = ({
           md:grid-cols-3 
           lg:grid-cols-4
           xl:grid-cols-5
-          2xl:grid-cols-6
+          2xl:grid-cols-5
           gap-8
         "
         >
-          {room.map((reservation: any) => {
+          {room.map((reservation: any, index) => {
             return (
               <ListingCard
                 key={reservation.id}
@@ -73,6 +120,11 @@ const MyOwnClient: React.FC<MyOwnClientProps> = ({
                 onClickCard={() => {
                   onClickCard(reservation);
                 }}
+                actionId={reservation.id}
+                disabled={deletingId === reservation.id}
+                index={index}
+                editMode={true}
+                editPosition="price"
               />
             );
           })}

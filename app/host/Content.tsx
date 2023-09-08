@@ -686,12 +686,18 @@ export default function ContentComponent({
 
   const historyReservation: SafeReservation[] = [];
   const currentReservations: SafeReservation[] = [];
+  const myRoom: SafeReservation[] = [];
 
-  reservationListData?.forEach((item: any) => {
-    if (new Date(item.endDate).getTime() < today.getTime()) {
-      historyReservation.push(item);
-    } else {
-      currentReservations.push(item);
+  reservationListData?.forEach((item: SafeReservation) => {
+    if (item.userId === currentUser?.id) {
+      if (new Date(item.endDate).getTime() < today.getTime()) {
+        historyReservation.push(item);
+      } else {
+        currentReservations.push(item);
+      }
+    }
+    if (item.roomOwnId === currentUser?.id) {
+      myRoom.push(item);
     }
   });
 
@@ -742,7 +748,7 @@ export default function ContentComponent({
       <MyOwnClient
         currentUser={currentUser}
         room={accommodation}
-        ReservationListData={reservationListData}
+        ReservationListData={myRoom}
       />
     );
   } else if (tab === "current") {
@@ -751,6 +757,8 @@ export default function ContentComponent({
         reservations={currentReservations}
         useAction={true}
         currentUser={currentUser}
+        editMode={false}
+        actionPosition={"price"}
       />
     );
   } else if (tab === "history") {
@@ -759,6 +767,7 @@ export default function ContentComponent({
         reservations={historyReservation}
         useAction={false}
         currentUser={currentUser}
+        editMode={false}
       />
     );
   } else if (tab === "favorites") {
@@ -830,10 +839,10 @@ export default function ContentComponent({
                   // }
                 >
                   {/* history view */}
-                  <HistoryChart data={reservationListData} />
+                  <HistoryChart data={myRoom} />
 
                   <div className="my-5">
-                    <HistoryTable data={reservationListData} />
+                    <HistoryTable data={myRoom} />
                   </div>
                 </div>
 

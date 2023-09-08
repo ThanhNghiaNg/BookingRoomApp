@@ -54,12 +54,13 @@ const HeartButton: React.FC<HeartButtonProps> = ({
           e.stopPropagation();
         }}
       >
-        {!currentUser && (
+        {!currentUser ? (
           <SignInButton mode="modal">{heartButton}</SignInButton>
+        ) : (
+          <SignedIn>
+            <div onClick={toggleFavorite}>{heartButton}</div>
+          </SignedIn>
         )}
-        <SignedIn>
-          <div onClick={toggleFavorite}>{heartButton}</div>
-        </SignedIn>
       </div>
     </>
   );

@@ -26,9 +26,9 @@ export async function POST(request: Request) {
     query.accommodationId = accommodationId;
   }
 
-  if (currentUser.id) {
-    query.userId = currentUser.id;
-  }
+  // if (currentUser.id) {
+  //   query.userId = currentUser.id;
+  // }
 
   const reservations = await prisma.reservation.findMany({
     where: query,
@@ -52,6 +52,7 @@ export async function POST(request: Request) {
         ...reservation.accommodation,
         createdAt: reservation.accommodation.createdAt.toISOString(),
       },
+      roomOwnId: reservation.accommodation.userId,
     };
     res.push(temp);
   }) || [];

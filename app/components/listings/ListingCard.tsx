@@ -30,6 +30,9 @@ interface ListingCardProps {
   onClickCard?: () => void;
   textColor?: string;
   index?: number;
+  editMode?: boolean;
+  editPosition?: "price" | "bottom";
+  actionPosition?: "price" | "bottom";
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -44,6 +47,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
   onClickCard,
   textColor,
   index,
+  editMode = true,
+  editPosition = "bottom",
+  actionPosition = "bottom",
 }) => {
   const router = useRouter();
 
@@ -101,7 +107,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               router.push(`/accommodation/${data?.id}`);
             }
       }
-      className="card shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-base-100 col-span-1 cursor-pointer group max-h-[550px] my-4 mx-2"
+      className="card shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] bg-base-100 col-span-1 cursor-pointer group h-[550px] my-4 mx-2"
     >
       <div className="flex flex-col gap-2 w-full">
         <figure>
@@ -144,7 +150,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </figure>
 
         <div className="card-body">
-          <h2 className="card-title">
+          <h2 className="card-title h-[56px]">
             <Tooltip
               placement="bottom"
               title={`${data?.address}, ${data?.area}`}
@@ -160,7 +166,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             <div className={"badge badge-ghost font-light text-neutral-500"}>
               {reservationDate || data.properties}
             </div>
-            <div className="card-actions">
+            <div className="card-actions h-[48px]">
               {data?.convenient
                 ?.slice(0, 3)
                 ?.map((element: any, index: number) => (
@@ -176,12 +182,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
             </div>
           </div>
 
-          <div className="card-actions justify-end">
-            <div className={"font-semibold" + textColor || ""}>$ {price}</div>
-            {!reservation && <div className="font-light">/ night</div>}
-          </div>
-          {onAction && actionLabel && (
-            <div className="flex justify-between w-full gap-2">
+          <div
+            className={
+              "card-actions " +
+              ((editMode && editPosition === "price") ||
+              (onAction && actionLabel && actionPosition === "price")
+                ? "justify-between"
+                : "justify-end")
+            }
+          >
+            {onAction && actionLabel && actionPosition === "price" && (
               <div>
                 <Button
                   disabled={disabled}
@@ -190,6 +200,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
                   onClick={handleCancel}
                 />
               </div>
+            )}
+
+            {editMode && editPosition === "price" && (
               <div>
                 <Button
                   disabled={disabled}
@@ -197,8 +210,43 @@ const ListingCard: React.FC<ListingCardProps> = ({
                   outline
                   label={"Edit Room"}
                   onClick={handlerEdit}
+                  color="#fb06a4"
                 />
               </div>
+            )}
+            <div className={"font-semibold" + textColor || ""}>$ {price}</div>
+            {!reservation && <div className="font-light">/ night</div>}
+          </div>
+          {(onAction || actionLabel || editMode) && (
+            <div
+              className={
+                "flex w-full gap-2" +
+                (onAction && actionLabel && editMode
+                  ? " justify-between"
+                  : " justify-end")
+              }
+            >
+              {onAction && actionLabel && actionPosition === "bottom" && (
+                <div>
+                  <Button
+                    disabled={disabled}
+                    small
+                    label={actionLabel}
+                    onClick={handleCancel}
+                  />
+                </div>
+              )}
+              {editMode && editPosition === "bottom" && (
+                <div>
+                  <Button
+                    disabled={disabled}
+                    small
+                    outline
+                    label={"Edit Room"}
+                    onClick={handlerEdit}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
